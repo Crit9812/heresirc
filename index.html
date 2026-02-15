@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SIRC · tecnologías inmersivas</title>
+    <title>SIRC · creación de páginas web</title>
 
-    <!-- Fuentes más limpias y bold (estilo Nike) -->
+    <!-- Fuentes más limpias y bold -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <!-- Space Grotesk para títulos (mantiene el toque técnico pero con fuerza) + Inter para texto -->
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 
@@ -18,20 +17,18 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: #ffffff;      /* fondo blanco limpio como Nike */
+            background: #ffffff;
             color: #111111;
             line-height: 1.4;
             overflow-x: hidden;
         }
 
-        /* contenedor central con max-width al estilo Nike (contenido centrado) */
         .nike-wrapper {
             max-width: 1280px;
             margin: 0 auto;
             padding: 0 24px;
         }
 
-        /* ----- TIPOGRAFÍA BOLD Y NEGRA ----- */
         h1, h2, h3, .nav-link, .btn-like, .tag-nike {
             font-family: 'Space Grotesk', sans-serif;
             font-weight: 700;
@@ -59,16 +56,10 @@
             margin-bottom: 0.25rem;
         }
 
-        /* color de acento Nike – naranja volt / rojo energía */
-        .accent {
-            color: #ff5e00;  /* naranja Nike vibe */
-        }
-        .accent-bg {
-            background-color: #ff5e00;
-            color: white;
-        }
+        .accent { color: #ff5e00; }
+        .accent-bg { background-color: #ff5e00; color: white; }
 
-        /* ----- NAVBAR (simple, negro sobre blanco) ----- */
+        /* ----- NAVBAR ----- */
         .nav-bar {
             display: flex;
             justify-content: space-between;
@@ -107,7 +98,6 @@
             border-bottom-color: #ff5e00;
         }
 
-        /* botón hamburguesa (solo móvil) */
         .menu-toggle {
             display: none;
             background: none;
@@ -153,16 +143,53 @@
             gap: 1.2rem;
         }
         .tagline-neon {
-            font-size: 1.3rem;
-            font-weight: 500;
-            color: #555;
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: #333;
             letter-spacing: -0.01em;
             text-transform: uppercase;
         }
+        .hero-copy {
+            color: #444;
+            font-size: 1.05rem;
+            max-width: 44ch;
+        }
+
+        .cta-row {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            margin-top: 0.5rem;
+        }
+        .btn-like {
+            appearance: none;
+            border: 2px solid #111;
+            background: #111;
+            color: #fff;
+            padding: 0.9rem 1.2rem;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 0.9rem;
+            letter-spacing: 0.03em;
+            transition: transform 0.08s ease, background 0.2s ease, border 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+        }
+        .btn-like:hover { transform: translateY(-2px); }
+        .btn-like.outline {
+            background: transparent;
+            color: #111;
+        }
+        .btn-like.outline:hover {
+            border-color: #ff5e00;
+            color: #ff5e00;
+        }
+
         .social-tech {
             display: flex;
             gap: 1.5rem;
-            margin: 0.5rem 0;
+            margin: 0.8rem 0 0;
         }
         .social-item {
             font-size: 1.8rem;
@@ -173,28 +200,30 @@
             color: #ff5e00;
             transform: scale(1.1);
         }
+
         .email-holo {
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             border-left: 4px solid #ff5e00;
             padding-left: 1rem;
             background: #f5f5f5;
             padding: 0.8rem 1.5rem;
             width: fit-content;
+            margin-top: 0.2rem;
         }
         .email-holo a {
             color: #111;
             text-decoration: none;
-            font-weight: 600;
+            font-weight: 700;
             border-bottom: 1px solid #aaa;
         }
         .email-holo a:hover { color: #ff5e00; }
 
-        /* ----- CARDS (tres columnas, estilo producto Nike) ----- */
+        /* ----- CARDS ----- */
         .tech-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 2rem;
-            margin: 5rem 0;
+            margin: 4.5rem 0;
         }
 
         .tech-card {
@@ -204,7 +233,7 @@
             transition: all 0.2s ease;
             display: flex;
             flex-direction: column;
-            border-radius: 0;       /* ángulos rectos como Nike */
+            border-radius: 0;
             box-shadow: 0 5px 15px rgba(0,0,0,0.02);
         }
         .tech-card:hover {
@@ -219,7 +248,7 @@
             color: #ff5e00;
         }
         .tech-card h3 {
-            font-size: 2rem;
+            font-size: 1.9rem;
             font-weight: 700;
             line-height: 1;
             margin-bottom: 0.8rem;
@@ -236,7 +265,7 @@
             color: white;
             padding: 0.4rem 1.2rem;
             font-size: 0.8rem;
-            font-weight: 600;
+            font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             border: none;
@@ -247,23 +276,23 @@
             background: #ff5e00;
         }
 
-        /* ----- VALORES (lista doble) ----- */
+        /* ----- VALORES ----- */
         .values-section {
             margin: 5rem 0;
             border-top: 2px solid #111;
             padding-top: 3rem;
         }
         .section-title {
-            font-size: 2.8rem;
+            font-size: 2.6rem;
             font-weight: 700;
-            margin-bottom: 2.5rem;
+            margin-bottom: 2.2rem;
             display: flex;
             align-items: center;
             gap: 0.8rem;
         }
         .section-title i {
             color: #ff5e00;
-            font-size: 2.5rem;
+            font-size: 2.3rem;
         }
         .values-grid {
             display: grid;
@@ -277,19 +306,20 @@
             padding: 1rem 1.2rem;
             background: #f5f5f5;
             border-left: 5px solid #ff5e00;
-            font-weight: 500;
+            font-weight: 600;
+            color: #222;
         }
         .value-item i {
-            font-size: 1.8rem;
+            font-size: 1.7rem;
             color: #111;
             width: 2rem;
         }
         .value-item span strong {
             color: #ff5e00;
-            font-weight: 700;
+            font-weight: 800;
         }
 
-        /* ----- GALERÍA FLOTANTE (ahora grid fijo) ----- */
+        /* ----- GALERÍA ----- */
         .float-container {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -308,7 +338,7 @@
             border-color: #ff5e00;
         }
 
-        /* ----- FOOTER (simple) ----- */
+        /* ----- FOOTER ----- */
         .footer-tech {
             border-top: 2px solid #ddd;
             padding: 2.5rem 0 2rem;
@@ -320,56 +350,37 @@
         .footer-tech strong { color: #111; }
         .footer-tech a {
             color: #111;
-            font-weight: 600;
+            font-weight: 700;
             text-decoration: none;
             border-bottom: 1px solid #ff5e00;
         }
 
-        /* ----- AJUSTES MÓVILES (Nike también es responsive) ----- */
         @media (max-width: 1024px) {
-            .tech-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
+            .tech-grid { grid-template-columns: repeat(2, 1fr); }
         }
 
         @media (max-width: 768px) {
-            .nav-bar {
-                padding: 1rem 0;
-            }
-            .nav-links {
-                display: none;  /* simplificado: en móvil se podría activar con js pero para mantener simple se ocultan */
-            }
-            .menu-toggle {
-                display: block;
-            }
+            .nav-bar { padding: 1rem 0; }
+            .nav-links { display: none; }
+            .menu-toggle { display: block; }
+
             .hero-nike {
                 grid-template-columns: 1fr;
                 text-align: center;
             }
-            .hero-right {
-                align-items: center;
-            }
-            .email-holo {
-                margin: 0 auto;
-            }
-            .tech-grid {
-                grid-template-columns: 1fr;
-            }
-            .values-grid {
-                grid-template-columns: 1fr;
-            }
-            .float-container {
-                grid-template-columns: 1fr;
-            }
+            .hero-right { align-items: center; }
+            .email-holo { margin: 0.2rem auto 0; }
+            .cta-row { justify-content: center; }
+
+            .tech-grid { grid-template-columns: 1fr; }
+            .values-grid { grid-template-columns: 1fr; }
+            .float-container { grid-template-columns: 1fr; }
         }
 
-        /* scroll offset */
         section, div[id] { scroll-margin-top: 100px; }
 
-        /* Eliminamos cualquier neón/glitch/partículas, todo es limpio */
-        #particles-canvas { display: none; } /* lo ocultamos porque hemos eliminado el canvas del HTML */
+        #particles-canvas { display: none; }
 
-        /* mantenemos las variables de imagen por si acaso */
         :root {
             --profile-pos-x: 50%;
             --profile-pos-y: 25%;
@@ -378,9 +389,7 @@
     </style>
 </head>
 <body>
-<!-- ELIMINADO canvas de partículas completamente (estilo Nike no lo usa) -->
 
-<!-- NAVBAR (simplificada, estilo Nike) -->
 <div class="nike-wrapper">
     <nav class="nav-bar">
         <a href="#" class="logo">SIRC<span>.</span></a>
@@ -394,60 +403,93 @@
         <button class="menu-toggle" aria-label="Menú"><i class="fas fa-bars"></i></button>
     </nav>
 
-    <!-- HERO (reorganizado) -->
+    <!-- HERO -->
     <section id="inicio" class="hero-nike">
         <div class="hero-left">
             <div class="avatar-tech" id="avatarContainer">
-                <!-- los anillos se eliminan (no Nike) -->
                 <img src="https://img.heresirc.com/Imagenes/icono.png" alt="SIRC" class="profile-img" id="profileImg" />
             </div>
         </div>
-        <div class="social-tech">
-            <a href="https://www.facebook.com/share/1897MroDnf/"
-               class="social-item"
-               aria-label="Facebook"
-               target="_blank"
-               rel="noopener noreferrer">
-                <i class="fab fa-facebook-f"></i>
-            </a>
 
-            <a href="https://www.instagram.com/cris_tellezz/"
-               class="social-item"
-               aria-label="Instagram"
-               target="_blank"
-               rel="noopener noreferrer">
-                <i class="fab fa-instagram"></i>
-            </a>
+        <div class="hero-right">
+            <div class="tagline-neon">Diseño. Desarrollo. Lanzamiento. <span class="accent">Webs que venden.</span></div>
+            <h1>CREAMOS <span class="accent">PÁGINAS WEB</span></h1>
+            <p class="hero-copy">
+                En SIRC diseñamos y construimos sitios rápidos, claros y listos para convertir:
+                landing pages, sitios corporativos, portfolios y e-commerce. Sin ruido, con resultados.
+            </p>
 
-            <a href="#" class="social-item" aria-label="GitHub">
-                <i class="fab fa-github"></i>
-            </a>
+            <div class="cta-row">
+                <a class="btn-like" href="mailto:hola@heresirc.space?subject=Cotizaci%C3%B3n%20web%20-%20SIRC">
+                    <i class="fas fa-paper-plane"></i> COTIZAR PROYECTO
+                </a>
+                <a class="btn-like outline" href="#nosotros">
+                    <i class="fas fa-layer-group"></i> VER ENFOQUE
+                </a>
+            </div>
 
-            <a href="#" class="social-item" aria-label="LinkedIn">
-                <i class="fab fa-linkedin-in"></i>
-            </a>
+            <div class="social-tech">
+                <a href="https://www.facebook.com/share/1897MroDnf/"
+                   class="social-item"
+                   aria-label="Facebook"
+                   target="_blank"
+                   rel="noopener noreferrer">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+
+                <a href="https://www.instagram.com/cris_tellezz/"
+                   class="social-item"
+                   aria-label="Instagram"
+                   target="_blank"
+                   rel="noopener noreferrer">
+                    <i class="fab fa-instagram"></i>
+                </a>
+
+                <a href="#" class="social-item" aria-label="GitHub">
+                    <i class="fab fa-github"></i>
+                </a>
+
+                <a href="#" class="social-item" aria-label="LinkedIn">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+            </div>
+
+            <div class="email-holo">
+                Escribe a: <a href="mailto:hola@heresirc.space">hola@heresirc.space</a>
+            </div>
         </div>
     </section>
 
-    <!-- CARDS (contenido original, ahora imagen flotante se usa aparte) -->
+    <!-- CARDS -->
     <section class="tech-grid" id="nosotros">
         <article class="tech-card">
-            <div class="tech-icon"><i class="fas fa-dna"></i></div>
+            <div class="tech-icon"><i class="fas fa-laptop-code"></i></div>
             <h3>ADN SIRC</h3>
-            <p>Como el <strong>paisaje 4</strong> —valles de datos infinitos— tejemos algoritmos con la serenidad de la naturaleza. Nuestra arquitectura combina ética y deep learning.</p>
-            <span class="tech-tag"><i class="fas fa-cog" style="margin-right:6px;"></i> núcleo cuántico</span>
+            <p>
+                Construimos con mentalidad de producto: <strong>claridad visual</strong>, estructura sólida y rendimiento.
+                Tu web debe cargar rápido, verse increíble y guiar al usuario directo a la acción.
+            </p>
+            <span class="tech-tag"><i class="fas fa-gauge-high" style="margin-right:6px;"></i> performance real</span>
         </article>
+
         <article class="tech-card" id="mision">
             <div class="tech-icon"><i class="fas fa-rocket"></i></div>
             <h3>MISIÓN</h3>
-            <p>Inspirados en el <strong>cañón digital (paisaje 5)</strong>: transformar estructuras rígidas en experiencias fluidas. Democratizamos la inteligencia artificial con luz propia.</p>
-            <span class="tech-tag"><i class="fas fa-bolt" style="margin-right:6px;"></i> aceleración cognitiva</span>
+            <p>
+                Crear páginas web que <strong>conviertan visitas en clientes</strong>.
+                Diseñamos experiencias simples y elegantes, optimizadas para móvil, SEO y velocidad desde el día uno.
+            </p>
+            <span class="tech-tag"><i class="fas fa-bolt" style="margin-right:6px;"></i> lanzamientos rápidos</span>
         </article>
+
         <article class="tech-card" id="vision">
             <div class="tech-icon"><i class="fas fa-globe"></i></div>
             <h3>VISIÓN</h3>
-            <p>Un <strong>archipiélago de innovación (paisaje 6)</strong> conectado por redes cuánticas. Ser el puente entre la humanidad y la próxima frontera tecnológica.</p>
-            <span class="tech-tag"><i class="fas fa-sparkles" style="margin-right:6px;"></i> 2050 · sin límites</span>
+            <p>
+                Ser el aliado de referencia para negocios que quieren crecer en digital:
+                <strong>webs modernas</strong>, escalables y fáciles de mantener, con resultados medibles y mejora continua.
+            </p>
+            <span class="tech-tag"><i class="fas fa-chart-line" style="margin-right:6px;"></i> crecimiento sostenido</span>
         </article>
     </section>
 
@@ -455,33 +497,31 @@
     <section id="valores" class="values-section">
         <h2 class="section-title"><i class="fas fa-cubes"></i> PRINCIPIOS SIRC <i class="fas fa-cubes"></i></h2>
         <div class="values-grid">
-            <div class="value-item"><i class="fas fa-leaf"></i> <span><strong>PAISAJE 4 · serenidad</strong> — algoritmos conscientes</span></div>
-            <div class="value-item"><i class="fas fa-fire"></i> <span><strong>PAISAJE 5 · transformación</strong> — evolución constante</span></div>
-            <div class="value-item"><i class="fas fa-water"></i> <span><strong>PAISAJE 6 · inmensidad</strong> — diversidad de pensamiento</span></div>
-            <div class="value-item"><i class="fas fa-shield-halved"></i> <span><strong>integridad</strong> — código abierto y ético</span></div>
-            <div class="value-item"><i class="fas fa-infinity"></i> <span><strong>curiosidad</strong> — exploración sin fronteras</span></div>
-            <div class="value-item"><i class="fas fa-hand-holding-heart"></i> <span><strong>comunidad</strong> — tecnología para todos</span></div>
+            <div class="value-item"><i class="fas fa-ruler-combined"></i> <span><strong>claridad</strong> — diseño que se entiende en 5 segundos</span></div>
+            <div class="value-item"><i class="fas fa-mobile-screen-button"></i> <span><strong>mobile first</strong> — pensado para el pulgar y la velocidad</span></div>
+            <div class="value-item"><i class="fas fa-gauge-high"></i> <span><strong>rendimiento</strong> — carga rápida, Core Web Vitals en mente</span></div>
+            <div class="value-item"><i class="fas fa-magnifying-glass"></i> <span><strong>SEO base</strong> — estructura, etiquetas y contenido encontrable</span></div>
+            <div class="value-item"><i class="fas fa-shield-halved"></i> <span><strong>confianza</strong> — buenas prácticas, seguridad y soporte</span></div>
+            <div class="value-item"><i class="fas fa-chart-simple"></i> <span><strong>medición</strong> — objetivos claros y mejoras con datos</span></div>
         </div>
     </section>
 
-    <!-- GALERÍA (imágenes flotantes convertidas en grid fijo) -->
-    <section class="float-container" aria-label="Galería paisajes">
-        <img src="https://img.heresirc.com/Imagenes/paisaje4.jpg" alt="paisaje 4" class="float-img" loading="lazy" />
-        <img src="https://img.heresirc.com/Imagenes/paisaje5.jpg" alt="paisaje 5" class="float-img" loading="lazy" />
-        <img src="https://img.heresirc.com/Imagenes/paisaje6.jpg" alt="paisaje 6" class="float-img" loading="lazy" />
+    <!-- GALERÍA (se mantiene; si quieres, después la cambiamos por screenshots de proyectos) -->
+    <section class="float-container" aria-label="Galería">
+        <img src="https://img.heresirc.com/Imagenes/paisaje4.jpg" alt="Galería 1" class="float-img" loading="lazy" />
+        <img src="https://img.heresirc.com/Imagenes/paisaje5.jpg" alt="Galería 2" class="float-img" loading="lazy" />
+        <img src="https://img.heresirc.com/Imagenes/paisaje6.jpg" alt="Galería 3" class="float-img" loading="lazy" />
     </section>
 
-    <!-- FOOTER -->
     <footer class="footer-tech">
-        ✦ <strong>SIRC</strong> · donde los paisajes 4,5,6 se convierten en código ✦ <br />
-        © 2025 — imaginación cuántica · <a href="mailto:hola@heresirc.space">hola@heresirc.space</a>
+        ✦ <strong>SIRC</strong> · diseño y desarrollo web con intención ✦ <br />
+        © 2025 — páginas web rápidas · <a href="mailto:hola@heresirc.space">hola@heresirc.space</a>
     </footer>
 </div>
 
-<!-- SCRIPTS MÍNIMOS (solo fallback de imagen y menú opcional) -->
 <script>
     (function() {
-        // Fallback de imagen (el mismo que antes, adaptado)
+        // Fallback de imagen
         const img = document.getElementById("profileImg");
         if (img) {
             function applyFallback() {
@@ -494,7 +534,7 @@
                 const fallbackDiv = document.createElement("div");
                 fallbackDiv.className = "profile-fallback";
                 fallbackDiv.style.cssText =
-                    "width:100%;height:100%;background:#111; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold; color:white; font-size:2rem; border:3px solid #ff5e00;";
+                    "width:100%;height:100%;background:#111; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:800; color:white; font-size:2rem; border:3px solid #ff5e00; font-family:Space Grotesk, sans-serif;";
                 fallbackDiv.textContent = "SIRC";
                 container.appendChild(fallbackDiv);
             }
@@ -502,7 +542,7 @@
             if (img.complete && img.naturalWidth === 0) applyFallback();
         }
 
-        // Pequeño menú hamburguesa (para móvil solo muestra alerta, pero no es crítico)
+        // Menú hamburguesa (versión simple)
         const toggle = document.querySelector('.menu-toggle');
         if (toggle) {
             toggle.addEventListener('click', () => {
@@ -512,6 +552,5 @@
     })();
 </script>
 
-<!-- No hay canvas de partículas, todo más limpio -->
 </body>
 </html>
