@@ -10,11 +10,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <!-- Font Awesome 6 (iconos) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+        }
+
+        /* ✅ Ajuste rápido del recorte de tu foto (solo cambia este % si quieres) */
+        :root{
+            --profile-pos-x: 50%;
+            --profile-pos-y: 22%;   /* ⬅️ sube/baja el encuadre: 10% = más arriba, 40% = más abajo */
+            --profile-zoom: 1.12;   /* ⬅️ zoom suave para que se vea mejor en círculo */
         }
 
         body {
@@ -76,17 +84,18 @@
             100% { transform: translateY(-15px); }
         }
 
-        /* Contenedor de la imagen de perfil */
+        /* ✅ Contenedor de la imagen de perfil (MEJORADO) */
         .profile-img-wrapper {
-            width: 160px;
-            height: 160px;
+            width: 180px;              /* antes 160 */
+            height: 180px;             /* antes 160 */
             margin: 0 auto 2rem;
             border-radius: 50%;
-            padding: 5px;
+            padding: 6px;              /* un poquito más */
             background: linear-gradient(45deg, #ff6ec4, #7873f5, #3b9eff);
             background-size: 200% 200%;
             animation: rotate-gradient 6s linear infinite;
-            box-shadow: 0 15px 30px -8px #3b9eff;
+            box-shadow: 0 18px 38px -10px rgba(59, 158, 255, 0.8);
+            position: relative;
         }
 
         @keyframes rotate-gradient {
@@ -95,17 +104,26 @@
             100% { background-position: 0% 50%; }
         }
 
+        /* ✅ Foto de perfil (MEJORADO para tu selfie vertical) */
         .profile-img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+
+            /* 🔥 Esto es lo clave para que tu foto se vea bien en círculo */
+            object-position: var(--profile-pos-x) var(--profile-pos-y);
+
             border-radius: 50%;
             border: 4px solid #0f172a;
-            transition: transform 0.4s ease;
+            transform: scale(var(--profile-zoom)); /* zoom suave */
+            transition: transform 0.35s ease, filter 0.35s ease;
+            filter: contrast(1.08) saturate(1.05) brightness(1.05);
+            will-change: transform;
         }
 
         .profile-img:hover {
-            transform: scale(1.05);
+            transform: scale(calc(var(--profile-zoom) + 0.05));
+            filter: contrast(1.12) saturate(1.08) brightness(1.08);
         }
 
         /* Título con efecto glitch */
@@ -266,6 +284,7 @@
             .glitch { font-size: 3rem; }
             .glass-card { padding: 2rem 1.5rem; }
             .floating-img { width: 60px; height: 60px; }
+            .profile-img-wrapper { width: 160px; height: 160px; } /* mantiene bien en móvil */
         }
 
         @media (max-width: 500px) {
@@ -278,7 +297,7 @@
 <!-- Canvas para partículas (fondo dinámico) -->
 <canvas id="particles-canvas"></canvas>
 
-<!-- Imágenes flotantes decorativas (¡IMPORTANTE! Son las imágenes que deberás reemplazar) -->
+<!-- Imágenes flotantes decorativas -->
 <div class="floating-images">
     <img src="https://img.heresirc.com/Imagenes/paisaje1.jpg" alt="floating-1" class="floating-img floating-img-1">
     <img src="https://img.heresirc.com/Imagenes/paisaje2.jpg" alt="floating-2" class="floating-img floating-img-2">
@@ -291,16 +310,22 @@
 <!-- Contenido principal -->
 <div class="main-content">
     <div class="glass-card">
-        <!-- Foto de perfil (reemplazar) -->
+        <!-- Foto de perfil -->
         <div class="profile-img-wrapper">
-            <img src="https://img.heresirc.com/Imagenes/perfil.jpg" alt="Heresirc profile" class="profile-img">
+            <img
+                    src="https://img.heresirc.com/Imagenes/perfil.jpg"
+                    alt="Heresirc profile"
+                    class="profile-img"
+                    loading="eager"
+                    decoding="async"
+            >
         </div>
 
         <h1 class="glitch">HERESIRC</h1>
 
         <p class="bio">✨ Hola 👋 Soy Heresirc. Bienvenido a mi espacio creativo. ✨</p>
 
-        <!-- Redes sociales (con los enlaces solicitados) -->
+        <!-- Redes sociales -->
         <div class="social-links">
             <a href="https://www.facebook.com/share/1897MroDnf/" target="_blank" class="social-link" style="color: #1877f2;"><i class="fab fa-facebook-f"></i></a>
             <a href="https://instagram.com/cris_tellezz" target="_blank" class="social-link" style="color: #e4405f;"><i class="fab fa-instagram"></i></a>
