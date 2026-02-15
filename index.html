@@ -1,18 +1,407 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Heresirc</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Heresirc · Página creativa</title>
+    <!-- Fuentes modernas -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 (iconos) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0f1e;
+            color: #f0f0f0;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Canvas de partículas (fondo interactivo) */
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none; /* para poder hacer clic en los elementos de arriba */
+        }
+
+        /* Contenedor principal (por encima del canvas) */
+        .main-content {
+            position: relative;
+            z-index: 10;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        /* Tarjeta principal con efecto glass */
+        .glass-card {
+            background: rgba(20, 30, 45, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 3rem;
+            padding: 3rem 2.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 2px rgba(120, 200, 255, 0.2) inset;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 100%;
+            max-width: 800px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: float-card 6s infinite alternate ease-in-out;
+        }
+
+        .glass-card:hover {
+            transform: scale(1.02) translateY(-5px);
+            box-shadow: 0 30px 60px -12px rgba(0, 200, 255, 0.3), 0 0 0 3px rgba(100, 180, 255, 0.4) inset;
+        }
+
+        @keyframes float-card {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-15px); }
+        }
+
+        /* Contenedor de la imagen de perfil */
+        .profile-img-wrapper {
+            width: 160px;
+            height: 160px;
+            margin: 0 auto 2rem;
+            border-radius: 50%;
+            padding: 5px;
+            background: linear-gradient(45deg, #ff6ec4, #7873f5, #3b9eff);
+            background-size: 200% 200%;
+            animation: rotate-gradient 6s linear infinite;
+            box-shadow: 0 15px 30px -8px #3b9eff;
+        }
+
+        @keyframes rotate-gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 4px solid #0f172a;
+            transition: transform 0.4s ease;
+        }
+
+        .profile-img:hover {
+            transform: scale(1.05);
+        }
+
+        /* Título con efecto glitch */
+        .glitch {
+            font-size: 4rem;
+            font-weight: 800;
+            text-align: center;
+            position: relative;
+            letter-spacing: 5px;
+            color: #fff;
+            text-shadow: 0.05em 0 0 rgba(255, 0, 0, 0.7), -0.05em -0.025em 0 rgba(0, 255, 255, 0.7);
+            animation: glitch-shake 2.5s infinite;
+        }
+
+        @keyframes glitch-shake {
+            0%, 100% { transform: translate(0); }
+            20% { transform: translate(-2px, 1px); }
+            40% { transform: translate(2px, -1px); }
+            60% { transform: translate(-1px, 2px); }
+            80% { transform: translate(1px, -2px); }
+        }
+
+        .bio {
+            text-align: center;
+            font-size: 1.4rem;
+            margin: 1.5rem 0 2rem;
+            background: linear-gradient(135deg, #a5f0ff, #c1b3ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 600;
+        }
+
+        /* Redes sociales (botones animados) */
+        .social-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.2rem;
+            justify-content: center;
+            margin: 2rem 0 1.5rem;
+        }
+
+        .social-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            border-radius: 30px;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(8px);
+            color: white;
+            font-size: 1.8rem;
+            text-decoration: none;
+            transition: 0.3s;
+            border: 1px solid rgba(255,255,255,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .social-link:hover::before {
+            left: 100%;
+        }
+
+        .social-link:hover {
+            transform: translateY(-8px) scale(1.1);
+            background: rgba(255,255,255,0.2);
+            box-shadow: 0 0 20px currentColor;
+        }
+
+        .social-link i {
+            transition: transform 0.2s;
+        }
+
+        .social-link:hover i {
+            transform: scale(1.2);
+        }
+
+        /* Email */
+        .email {
+            text-align: center;
+            font-size: 1.1rem;
+            margin: 2rem 0 0;
+        }
+
+        .email a {
+            color: #90dfff;
+            text-decoration: none;
+            border-bottom: 2px dotted #4a90e2;
+            padding-bottom: 2px;
+            transition: 0.2s;
+        }
+
+        .email a:hover {
+            color: white;
+            border-bottom-color: cyan;
+        }
+
+        /* Imágenes flotantes decorativas */
+        .floating-images {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        .floating-img {
+            position: absolute;
+            width: 90px;
+            height: 90px;
+            object-fit: cover;
+            border-radius: 20px;
+            box-shadow: 0 20px 30px -10px rgba(0,0,0,0.6);
+            border: 2px solid rgba(255,255,255,0.15);
+            animation: orbit 18s infinite alternate ease-in-out;
+            opacity: 0.7;
+            transition: opacity 0.4s, transform 0.3s;
+        }
+
+        .floating-img:hover {
+            opacity: 1;
+            transform: scale(1.2) rotate(5deg);
+            pointer-events: auto;
+        }
+
+        /* Posiciones y animaciones individuales para cada imagen */
+        .floating-img-1 { top: 8%; left: 5%; animation-duration: 14s; }
+        .floating-img-2 { bottom: 12%; right: 3%; animation-duration: 19s; width: 110px; height: 110px; }
+        .floating-img-3 { top: 20%; right: 8%; animation-duration: 16s; width: 70px; height: 70px; }
+        .floating-img-4 { bottom: 25%; left: 2%; animation-duration: 21s; width: 130px; height: 130px; }
+        .floating-img-5 { top: 40%; left: 12%; animation-duration: 12s; width: 80px; height: 80px; }
+        .floating-img-6 { bottom: 5%; right: 15%; animation-duration: 23s; width: 100px; height: 100px; }
+
+        @keyframes orbit {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(30px, -30px) rotate(10deg); }
+            50% { transform: translate(-20px, 40px) rotate(-8deg); }
+            75% { transform: translate(40px, 20px) rotate(15deg); }
+            100% { transform: translate(-30px, -30px) rotate(-5deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 700px) {
+            .glitch { font-size: 3rem; }
+            .glass-card { padding: 2rem 1.5rem; }
+            .floating-img { width: 60px; height: 60px; }
+        }
+
+        @media (max-width: 500px) {
+            .floating-images { display: none; } /* se ven bien en desktop */
+        }
+    </style>
 </head>
-<body style="font-family: system-ui, Arial; max-width: 720px; margin: 64px auto; padding: 0 16px;">
-<h1>Heresirc</h1>
-<p>Hola 👋 Soy Heresirc. Bienvenido a mi página.</p>
-<p>Contacto: <a href="mailto:tuemail@correo.com">tuemail@correo.com</a></p>
-<p>
-    <a href="https://instagram.com/" target="_blank">Instagram</a> ·
-    <a href="https://github.com/" target="_blank">GitHub</a> ·
-    <a href="https://linkedin.com/" target="_blank">LinkedIn</a>
-</p>
+<body>
+
+<!-- Canvas para partículas (fondo dinámico) -->
+<canvas id="particles-canvas"></canvas>
+
+<!-- Imágenes flotantes decorativas (¡IMPORTANTE! Son las imágenes que deberás reemplazar) -->
+<div class="floating-images">
+    <img src="https://img.heresirc.com/Imagenes/paisaje1.jpg" alt="floating-1" class="floating-img floating-img-1">
+    <img src="https://img.heresirc.com/Imagenes/paisaje2.jpg" alt="floating-2" class="floating-img floating-img-2">
+    <img src="https://img.heresirc.com/Imagenes/paisaje3.jpg" alt="floating-3" class="floating-img floating-img-3">
+    <img src="https://img.heresirc.com/Imagenes/paisaje4.jpg" alt="floating-4" class="floating-img floating-img-4">
+    <img src="https://img.heresirc.com/Imagenes/paisaje5.jpg" alt="floating-5" class="floating-img floating-img-5">
+    <img src="https://img.heresirc.com/Imagenes/paisaje6.jpg" alt="floating-6" class="floating-img floating-img-6">
+</div>
+
+<!-- Contenido principal -->
+<div class="main-content">
+    <div class="glass-card">
+        <!-- Foto de perfil (reemplazar) -->
+        <div class="profile-img-wrapper">
+            <img src="https://img.heresirc.com/Imagenes/perfil.jpg" alt="Heresirc profile" class="profile-img">
+        </div>
+
+        <h1 class="glitch">HERESIRC</h1>
+
+        <p class="bio">✨ Hola 👋 Soy Heresirc. Bienvenido a mi espacio creativo. ✨</p>
+
+        <!-- Redes sociales (con los enlaces solicitados) -->
+        <div class="social-links">
+            <a href="https://www.facebook.com/share/1897MroDnf/" target="_blank" class="social-link" style="color: #1877f2;"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://instagram.com/cris_tellezz" target="_blank" class="social-link" style="color: #e4405f;"><i class="fab fa-instagram"></i></a>
+            <a href="#" target="_blank" class="social-link" style="color: #333;"><i class="fab fa-github"></i></a>
+            <a href="#" target="_blank" class="social-link" style="color: #0077b5;"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+
+        <!-- Email de contacto -->
+        <div class="email">
+            📧 <a href="mailto:tuemail@correo.com">tuemail@correo.com</a>
+        </div>
+
+        <p style="text-align: center; margin-top: 2rem; font-size: 0.9rem; opacity: 0.7;">✦ Página con mucho estilo y animaciones ✦</p>
+    </div>
+</div>
+
+<!-- Script para las partículas del fondo (super creativo) -->
+<script>
+    (function() {
+        const canvas = document.getElementById('particles-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let particles = [];
+
+        function initParticles() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+
+            const numberOfParticles = Math.floor((width * height) / 8000);
+            particles = [];
+            for (let i = 0; i < numberOfParticles; i++) {
+                particles.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    vx: (Math.random() - 0.5) * 0.4,
+                    vy: (Math.random() - 0.5) * 0.4,
+                    radius: Math.random() * 2.5 + 1,
+                    color: `rgba(${120 + Math.random()*80}, ${180 + Math.random()*75}, 255, ${Math.random()*0.5 + 0.2})`
+                });
+            }
+        }
+
+        function drawParticles() {
+            ctx.clearRect(0, 0, width, height);
+            ctx.fillStyle = '#0a0f1e';
+            ctx.fillRect(0, 0, width, height);
+
+            // Dibujar partículas
+            particles.forEach(p => {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fillStyle = p.color;
+                ctx.fill();
+            });
+
+            // Dibujar líneas entre partículas cercanas
+            ctx.strokeStyle = 'rgba(100, 180, 255, 0.1)';
+            ctx.lineWidth = 0.6;
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance < 100) {
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.strokeStyle = `rgba(150, 200, 255, ${0.1 * (1 - distance/100)})`;
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            // Mover partículas
+            particles.forEach(p => {
+                p.x += p.vx;
+                p.y += p.vy;
+
+                // Rebotar en bordes
+                if (p.x < 0 || p.x > width) p.vx *= -1;
+                if (p.y < 0 || p.y > height) p.vy *= -1;
+
+                // Mantener dentro
+                p.x = Math.min(Math.max(p.x, 0), width);
+                p.y = Math.min(Math.max(p.y, 0), height);
+            });
+
+            requestAnimationFrame(drawParticles);
+        }
+
+        window.addEventListener('resize', () => {
+            initParticles();
+        });
+
+        initParticles();
+        drawParticles();
+    })();
+</script>
+
+<!-- Pequeño efecto adicional: los iconos también tienen brillo -->
 </body>
 </html>
