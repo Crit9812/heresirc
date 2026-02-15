@@ -21,14 +21,12 @@
             --neon-cyan:#00f7ff;
             --neon-purple:#b47aff;
             --neon-pink:#ff5e9c;
-            --glass-edge:rgba(255,255,255,.08);
-            --glow-soft:0 0 30px rgba(0,247,255,.3);
             --grid-color:rgba(0,247,255,.1);
             --profile-pos-x:50%;
             --profile-pos-y:25%;
             --profile-zoom:1.1;
 
-            /* Escalas responsivas “suaves” (sin brincar por % raro) */
+            /* Escalas responsivas suaves */
             --wrap-pad: clamp(16px, 2.2vw, 32px);
             --radius-xl: clamp(26px, 3.2vw, 64px);
             --radius-lg: clamp(22px, 2.6vw, 48px);
@@ -41,10 +39,13 @@
 
             --avatar: clamp(140px, 20vw, 200px);
 
-            --nav-h: 56px;
+            /* alturas para offsets */
+            --nav-top-gap: 18px;      /* separación desde arriba */
+            --nav-desk-h: 74px;       /* aproximación de navbar desktop */
+            --nav-mob-h: 62px;        /* barra superior móvil */
         }
 
-        html { scroll-behavior:smooth; scroll-padding-top: 110px; }
+        html{ scroll-behavior:smooth; }
         body{
             font-family:'Inter',sans-serif;
             background:var(--bg-deep);
@@ -53,7 +54,7 @@
             overflow-x:hidden;
         }
 
-        /* Canvas de partículas */
+        /* Canvas partículas */
         #particles-canvas{
             position:fixed;
             inset:0;
@@ -64,7 +65,7 @@
             opacity:.6;
         }
 
-        /* Contenedor principal */
+        /* Wrapper con rejilla */
         .site-wrapper{
             position:relative;
             z-index:10;
@@ -78,9 +79,9 @@
             background-position:center center;
         }
 
-        /* =========================
-           NAV (DESKTOP)
-        ========================== */
+        /* =====================================================
+           NAV DESKTOP (arriba, sticky)
+        ====================================================== */
         .nav-neon{
             display:flex;
             justify-content:center;
@@ -96,8 +97,8 @@
             width:fit-content;
 
             position: sticky;
-            top: 18px;
-            z-index: 100;
+            top: var(--nav-top-gap);
+            z-index: 200;
         }
 
         .nav-neon a{
@@ -115,9 +116,7 @@
             gap:8px;
             white-space:nowrap;
         }
-
         .nav-neon a i{ color:var(--neon-cyan); font-size:1.05rem; }
-
         .nav-neon a:hover{
             background:rgba(0,247,255,.1);
             border-color:var(--neon-cyan);
@@ -125,29 +124,29 @@
             transform:translateY(-3px);
         }
 
-        /* =========================
-           NAV (TABLET / MOBILE) - MENÚ HAMBURGUESA
-           - Ya NO tapa el contenido.
-           - Barra fija abajo (tipo “dock”) y panel que se abre hacia arriba.
-        ========================== */
+        /* =====================================================
+           NAV TABLET/CEL (arriba, fijo) + menú desplegable
+           - Ya NO tapa contenido: reservamos padding-top.
+           - Panel baja hacia abajo desde la barra.
+        ====================================================== */
         .nav-mobile{
             position: fixed;
             left: 0;
             right: 0;
-            bottom: 0;
+            top: 0;
             z-index: 999;
             display: none; /* se activa en media queries */
-            padding: 10px var(--wrap-pad) calc(10px + env(safe-area-inset-bottom));
-            pointer-events: none; /* activamos solo el contenido */
+            padding: calc(10px + env(safe-area-inset-top)) var(--wrap-pad) 10px;
+            pointer-events: none;
         }
 
-        .nav-mobile .dock{
+        .nav-mobile .bar{
             pointer-events: auto;
             display:flex;
             align-items:center;
             justify-content:space-between;
-            gap: 10px;
-            height: var(--nav-h);
+            gap: 12px;
+            height: var(--nav-mob-h);
             padding: 10px 12px;
             border-radius: 999px;
             background: rgba(5,10,20,.78);
@@ -165,7 +164,6 @@
             font-weight:700;
             user-select:none;
         }
-
         .brand-dot{
             width: 32px;
             height: 32px;
@@ -197,7 +195,6 @@
             transition: .25s;
             box-shadow: 0 0 16px rgba(0,247,255,.12);
         }
-
         .menu-btn i{ color: var(--neon-cyan); }
         .menu-btn:hover{
             transform: translateY(-2px);
@@ -210,14 +207,15 @@
             position: absolute;
             left: var(--wrap-pad);
             right: var(--wrap-pad);
-            bottom: calc(var(--nav-h) + 20px + env(safe-area-inset-bottom));
+            top: calc(10px + env(safe-area-inset-top) + var(--nav-mob-h) + 12px);
             border-radius: 24px;
             background: rgba(8,15,30,.86);
             backdrop-filter: blur(18px);
             border: 1px solid rgba(180,122,255,.35);
             box-shadow: 0 25px 55px rgba(0,0,0,.7), 0 0 28px rgba(180,122,255,.18);
             padding: 14px;
-            transform: translateY(16px);
+
+            transform: translateY(-10px);
             opacity: 0;
             visibility: hidden;
             transition: .22s ease;
@@ -257,7 +255,6 @@
             transform: translateY(-2px);
         }
 
-        /* “overlay” para cerrar tocando afuera */
         .nav-overlay{
             position: fixed;
             inset:0;
@@ -273,9 +270,9 @@
             visibility: visible;
         }
 
-        /* =========================
+        /* =====================================================
            HERO
-        ========================== */
+        ====================================================== */
         .hero-hologram{
             background:rgba(8,15,30,.5);
             backdrop-filter:blur(15px);
@@ -297,10 +294,9 @@
             animation:rotateGlow 18s infinite linear;
             z-index:-1;
         }
-
         @keyframes rotateGlow{ 0%{transform:rotate(0deg)} 100%{transform:rotate(360deg)} }
 
-        /* Layout del hero adaptable (cambia organización en tablet/cel) */
+        /* Organización del hero (cambia en tablet/cel) */
         .hero-layout{
             display:grid;
             grid-template-columns: 1fr;
@@ -417,11 +413,9 @@
         }
         .email-holo a{ color:var(--neon-cyan); text-decoration:none; border-bottom:1px dashed; }
 
-        /* =========================
-           TARJETAS
-           - Grid fluido (no se ve mal en cada %)
-           - Cambia organización según tamaño (3 -> 2 -> 1)
-        ========================== */
+        /* =====================================================
+           TARJETAS (3 -> 2 -> 1)
+        ====================================================== */
         .tech-grid{
             display:grid;
             grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -460,7 +454,6 @@
             z-index:-1;
             transition:opacity .4s, transform .5s;
         }
-
         .tech-card:hover::before{ opacity:.25; transform:scale(1.08); }
 
         .card-bg-4::before{ background-image:url('https://img.heresirc.com/Imagenes/paisaje4.jpg'); }
@@ -502,9 +495,9 @@
             width: fit-content;
         }
 
-        /* =========================
+        /* =====================================================
            VALORES
-        ========================== */
+        ====================================================== */
         .values-section{
             background:rgba(5,12,25,.7);
             backdrop-filter:blur(15px);
@@ -555,7 +548,12 @@
             transform:translateX(6px);
         }
 
-        .value-item i{ font-size: clamp(1.8rem, 2.8vw, 2.5rem); color:var(--neon-pink); width: 2.4rem; flex: 0 0 auto; }
+        .value-item i{
+            font-size: clamp(1.8rem, 2.8vw, 2.5rem);
+            color:var(--neon-pink);
+            width: 2.4rem;
+            flex: 0 0 auto;
+        }
 
         .value-item span{
             font-size: clamp(.98rem, 1.5vw, 1.05rem);
@@ -568,9 +566,9 @@
             font-size: clamp(1.05rem, 1.8vw, 1.3rem);
         }
 
-        /* =========================
-           FLOTANTES (más flex y que no “reviente”)
-        ========================== */
+        /* =====================================================
+           FLOTANTES
+        ====================================================== */
         .float-container{
             position:relative;
             margin: clamp(18px, 3.5vw, 48px) 0;
@@ -611,9 +609,9 @@
             100%{transform:translateY(-28px) rotate(0deg)}
         }
 
-        /* =========================
+        /* =====================================================
            FOOTER
-        ========================== */
+        ====================================================== */
         .footer-tech{
             text-align:center;
             padding: 2.6rem 0 1rem;
@@ -622,47 +620,52 @@
             color:#98a9c7;
             font-size: clamp(.95rem, 1.4vw, 1rem);
         }
-
         .footer-tech a{ color:var(--neon-cyan); text-decoration:none; }
 
-        /* =========================
-           RESPONSIVE: TABLET
-           - Cambia organización (2 columnas en cards)
-           - Menú cambia a mobile dock
-           - Se añade “espacio” abajo para que el dock no tape contenido
-        ========================== */
+        /* =====================================================
+           SCROLL OFFSET PARA ANCLAS (cuando hay menú fijo arriba)
+        ====================================================== */
+        section, div[id] { scroll-margin-top: 120px; }
+        @media (max-width: 1024px){
+            section, div[id] { scroll-margin-top: calc(10px + env(safe-area-inset-top) + var(--nav-mob-h) + 22px); }
+        }
+
+        /* =====================================================
+           RESPONSIVE TABLET
+           - Menú cambia a barra fija arriba (no tapa contenido)
+           - Cards 2 columnas
+           - Hero cambia a 2 columnas
+        ====================================================== */
         @media (max-width: 1024px){
             .nav-neon{ display:none; }
             .nav-mobile{ display:block; }
-            body{ padding-bottom: calc(var(--nav-h) + 36px + env(safe-area-inset-bottom)); }
+
+            /* Reservamos espacio superior para que la barra fija no tape */
+            body{
+                padding-top: calc(10px + env(safe-area-inset-top) + var(--nav-mob-h) + 18px);
+            }
 
             .tech-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
-            /* Hero: en tablet, el avatar a la izquierda y texto a la derecha */
             .hero-layout{
                 grid-template-columns: auto 1fr;
                 align-items:center;
             }
             .hero-left{ justify-self:center; }
-            .hero-right{
-                text-align:left;
-            }
+            .hero-right{ text-align:left; }
             .hero-right .glitch-tech,
-            .hero-right .tagline-neon{
-                text-align:left;
-            }
+            .hero-right .tagline-neon{ text-align:left; }
             .social-tech{ justify-content:flex-start; }
             .email-holo{ margin-left: 0; }
         }
 
-        /* =========================
-           RESPONSIVE: MOBILE
-           - Cards a 1 columna
+        /* =====================================================
+           RESPONSIVE MOBILE
+           - Cards 1 columna
            - Hero vuelve a columna centrada
-           - Menú panel en 1 columna para no apretar
-        ========================== */
+           - Panel del menú a 1 columna
+        ====================================================== */
         @media (max-width: 640px){
-            html { scroll-padding-top: 28px; } /* ya no hay sticky arriba; usamos dock abajo */
             .hero-layout{ grid-template-columns: 1fr; }
             .hero-right{ text-align:center; }
             .hero-right .glitch-tech,
@@ -671,7 +674,6 @@
             .email-holo{ margin: 0 auto; }
 
             .tech-grid{ grid-template-columns: 1fr; }
-
             .nav-panel .grid{ grid-template-columns: 1fr; }
         }
 
@@ -688,6 +690,31 @@
 
 <!-- Overlay para cerrar menú (tablet/cel) -->
 <div class="nav-overlay" id="navOverlay" aria-hidden="true"></div>
+
+<!-- NAV MOBILE (TABLET/CEL) - SIEMPRE ARRIBA -->
+<nav class="nav-mobile" aria-label="Navegación móvil">
+    <div class="bar">
+        <div class="brand-mini" aria-hidden="true">
+            <div class="brand-dot">S</div>
+            <span>SIRC</span>
+        </div>
+
+        <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="navPanel">
+            <i class="fas fa-bars"></i>
+            MENÚ
+        </button>
+    </div>
+
+    <div class="nav-panel" id="navPanel" aria-hidden="true">
+        <div class="grid">
+            <a href="#inicio" data-navlink><i class="fas fa-home"></i> INICIO</a>
+            <a href="#nosotros" data-navlink><i class="fas fa-microchip"></i> ADN SIRC</a>
+            <a href="#mision" data-navlink><i class="fas fa-satellite"></i> MISIÓN</a>
+            <a href="#vision" data-navlink><i class="fas fa-eye"></i> VISIÓN</a>
+            <a href="#valores" data-navlink><i class="fas fa-cube"></i> VALORES</a>
+        </div>
+    </div>
+</nav>
 
 <div class="site-wrapper">
     <!-- NAV DESKTOP -->
@@ -787,31 +814,6 @@
         © 2025 — imaginación cuántica · <a href="mailto:hola@heresirc.space">hola@heresirc.space</a>
     </footer>
 </div>
-
-<!-- NAV MOBILE (TABLET/CEL) -->
-<nav class="nav-mobile" aria-label="Navegación móvil">
-    <div class="nav-panel" id="navPanel" aria-hidden="true">
-        <div class="grid">
-            <a href="#inicio" data-navlink><i class="fas fa-home"></i> INICIO</a>
-            <a href="#nosotros" data-navlink><i class="fas fa-microchip"></i> ADN SIRC</a>
-            <a href="#mision" data-navlink><i class="fas fa-satellite"></i> MISIÓN</a>
-            <a href="#vision" data-navlink><i class="fas fa-eye"></i> VISIÓN</a>
-            <a href="#valores" data-navlink><i class="fas fa-cube"></i> VALORES</a>
-        </div>
-    </div>
-
-    <div class="dock">
-        <div class="brand-mini" aria-hidden="true">
-            <div class="brand-dot">S</div>
-            <span>SIRC</span>
-        </div>
-
-        <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="navPanel">
-            <i class="fas fa-bars"></i>
-            MENÚ
-        </button>
-    </div>
-</nav>
 
 <!-- SCRIPTS -->
 <script>
@@ -972,7 +974,7 @@
         if (img.complete && img.naturalWidth === 0) applyFallback();
     })();
 
-    // ===== MENÚ TABLET/CEL (dock abajo + panel) =====
+    // ===== MENÚ TABLET/CEL (arriba + panel) =====
     (function () {
         const btn = document.getElementById("menuBtn");
         const panel = document.getElementById("navPanel");
@@ -987,7 +989,7 @@
             btn.setAttribute("aria-expanded", "true");
             panel.setAttribute("aria-hidden", "false");
             overlay.setAttribute("aria-hidden", "false");
-            document.documentElement.style.overflow = "hidden"; // evita scroll detrás
+            document.documentElement.style.overflow = "hidden";
         }
 
         function closeMenu(){
@@ -996,7 +998,7 @@
             btn.setAttribute("aria-expanded", "false");
             panel.setAttribute("aria-hidden", "true");
             overlay.setAttribute("aria-hidden", "true");
-            document.documentElement.style.overflow = ""; // restaura
+            document.documentElement.style.overflow = "";
         }
 
         function toggleMenu(){
@@ -1007,17 +1009,14 @@
         btn.addEventListener("click", toggleMenu);
         overlay.addEventListener("click", closeMenu);
 
-        // Cerrar al navegar
         links.forEach(a => a.addEventListener("click", () => {
             closeMenu();
         }));
 
-        // Cerrar con ESC
         document.addEventListener("keydown", (e) => {
             if (e.key === "Escape") closeMenu();
         });
 
-        // Si se cambia a desktop, cerramos por si acaso
         window.addEventListener("resize", () => {
             if (window.matchMedia("(min-width: 1025px)").matches) closeMenu();
         });
