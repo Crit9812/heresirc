@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SIRC · tecnologías inmersivas</title>
 
-    <!-- Fuentes tecnológicas -->
+    <!-- Fuentes -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 
     <style>
-        /* RESET Y VARIABLES DE ALTO IMPACTO */
+        /* RESET */
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root{
@@ -27,8 +27,24 @@
             --profile-pos-x:50%;
             --profile-pos-y:25%;
             --profile-zoom:1.1;
+
+            /* Escalas responsivas “suaves” (sin brincar por % raro) */
+            --wrap-pad: clamp(16px, 2.2vw, 32px);
+            --radius-xl: clamp(26px, 3.2vw, 64px);
+            --radius-lg: clamp(22px, 2.6vw, 48px);
+            --gap: clamp(14px, 1.8vw, 28px);
+
+            --h1: clamp(2.4rem, 6vw, 5rem);
+            --h2: clamp(2rem, 3.8vw, 3.5rem);
+            --tagline: clamp(1.1rem, 2.2vw, 1.8rem);
+            --text: clamp(1rem, 1.35vw, 1.1rem);
+
+            --avatar: clamp(140px, 20vw, 200px);
+
+            --nav-h: 56px;
         }
 
+        html { scroll-behavior:smooth; scroll-padding-top: 110px; }
         body{
             font-family:'Inter',sans-serif;
             background:var(--bg-deep);
@@ -37,23 +53,24 @@
             overflow-x:hidden;
         }
 
-        /* Canvas de partículas (fondo dinámico) */
+        /* Canvas de partículas */
         #particles-canvas{
             position:fixed;
-            top:0; left:0;
-            width:100%; height:100%;
+            inset:0;
+            width:100%;
+            height:100%;
             z-index:0;
             pointer-events:none;
             opacity:.6;
         }
 
-        /* Contenedor principal con rejilla de fondo */
+        /* Contenedor principal */
         .site-wrapper{
             position:relative;
             z-index:10;
             max-width:1400px;
             margin:0 auto;
-            padding:2rem 2rem;
+            padding: var(--wrap-pad);
             background-image:
                     linear-gradient(var(--grid-color) 1px, transparent 1px),
                     linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
@@ -61,23 +78,26 @@
             background-position:center center;
         }
 
-        /* ===== NAVBAR NEÓN ===== */
+        /* =========================
+           NAV (DESKTOP)
+        ========================== */
         .nav-neon{
             display:flex;
             justify-content:center;
             flex-wrap:wrap;
-            gap:1.5rem;
-            margin:1rem auto 3rem;
-            padding:.8rem 2rem;
+            gap:1.1rem;
+            margin: 10px auto 3rem;
+            padding: .65rem 1.4rem;
             background:rgba(5,10,20,.7);
             backdrop-filter:blur(15px);
             border:1px solid rgba(0,247,255,.25);
-            border-radius:60px;
+            border-radius: 999px;
             box-shadow:0 0 25px rgba(0,247,255,.2);
             width:fit-content;
-            position:sticky;
-            top:20px;
-            z-index:100;
+
+            position: sticky;
+            top: 18px;
+            z-index: 100;
         }
 
         .nav-neon a{
@@ -85,17 +105,18 @@
             text-decoration:none;
             font-weight:500;
             font-family:'Space Grotesk',sans-serif;
-            padding:.6rem 1.4rem;
-            border-radius:40px;
+            padding:.55rem 1.2rem;
+            border-radius:999px;
             letter-spacing:.5px;
             border:1px solid transparent;
             transition:all .3s ease;
             display:flex;
             align-items:center;
             gap:8px;
+            white-space:nowrap;
         }
 
-        .nav-neon a i{ color:var(--neon-cyan); font-size:1.1rem; }
+        .nav-neon a i{ color:var(--neon-cyan); font-size:1.05rem; }
 
         .nav-neon a:hover{
             background:rgba(0,247,255,.1);
@@ -104,14 +125,164 @@
             transform:translateY(-3px);
         }
 
-        /* ===== HERO ===== */
+        /* =========================
+           NAV (TABLET / MOBILE) - MENÚ HAMBURGUESA
+           - Ya NO tapa el contenido.
+           - Barra fija abajo (tipo “dock”) y panel que se abre hacia arriba.
+        ========================== */
+        .nav-mobile{
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 999;
+            display: none; /* se activa en media queries */
+            padding: 10px var(--wrap-pad) calc(10px + env(safe-area-inset-bottom));
+            pointer-events: none; /* activamos solo el contenido */
+        }
+
+        .nav-mobile .dock{
+            pointer-events: auto;
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap: 10px;
+            height: var(--nav-h);
+            padding: 10px 12px;
+            border-radius: 999px;
+            background: rgba(5,10,20,.78);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(0,247,255,.25);
+            box-shadow: 0 15px 35px rgba(0,0,0,.55), 0 0 25px rgba(0,247,255,.18);
+        }
+
+        .brand-mini{
+            display:flex;
+            align-items:center;
+            gap:10px;
+            font-family:'Space Grotesk',sans-serif;
+            letter-spacing:2px;
+            font-weight:700;
+            user-select:none;
+        }
+
+        .brand-dot{
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2px solid rgba(0,247,255,.65);
+            box-shadow: 0 0 22px rgba(0,247,255,.25);
+            display:grid;
+            place-items:center;
+            font-size: .95rem;
+            color: white;
+        }
+
+        .menu-btn{
+            appearance:none;
+            border:none;
+            background: rgba(0,247,255,.08);
+            color: white;
+            border: 1px solid rgba(0,247,255,.35);
+            height: 42px;
+            padding: 0 14px;
+            border-radius: 999px;
+            display:flex;
+            align-items:center;
+            gap:10px;
+            font-family:'Space Grotesk',sans-serif;
+            font-weight:600;
+            letter-spacing:.6px;
+            cursor:pointer;
+            transition: .25s;
+            box-shadow: 0 0 16px rgba(0,247,255,.12);
+        }
+
+        .menu-btn i{ color: var(--neon-cyan); }
+        .menu-btn:hover{
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(0,247,255,.22);
+            border-color: rgba(0,247,255,.65);
+        }
+
+        .nav-panel{
+            pointer-events: auto;
+            position: absolute;
+            left: var(--wrap-pad);
+            right: var(--wrap-pad);
+            bottom: calc(var(--nav-h) + 20px + env(safe-area-inset-bottom));
+            border-radius: 24px;
+            background: rgba(8,15,30,.86);
+            backdrop-filter: blur(18px);
+            border: 1px solid rgba(180,122,255,.35);
+            box-shadow: 0 25px 55px rgba(0,0,0,.7), 0 0 28px rgba(180,122,255,.18);
+            padding: 14px;
+            transform: translateY(16px);
+            opacity: 0;
+            visibility: hidden;
+            transition: .22s ease;
+        }
+
+        .nav-panel.open{
+            transform: translateY(0);
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .nav-panel .grid{
+            display:grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .nav-panel a{
+            text-decoration:none;
+            color:#f0f4ff;
+            font-family:'Space Grotesk',sans-serif;
+            font-weight:600;
+            border-radius: 18px;
+            padding: 12px 12px;
+            border: 1px solid rgba(0,247,255,.18);
+            background: rgba(0,247,255,.06);
+            display:flex;
+            align-items:center;
+            gap:10px;
+            transition:.22s ease;
+        }
+
+        .nav-panel a i{ color: var(--neon-cyan); }
+        .nav-panel a:hover{
+            border-color: rgba(0,247,255,.6);
+            box-shadow: 0 0 20px rgba(0,247,255,.18);
+            transform: translateY(-2px);
+        }
+
+        /* “overlay” para cerrar tocando afuera */
+        .nav-overlay{
+            position: fixed;
+            inset:0;
+            background: rgba(0,0,0,.35);
+            backdrop-filter: blur(2px);
+            z-index: 998;
+            opacity: 0;
+            visibility: hidden;
+            transition: .2s ease;
+        }
+        .nav-overlay.open{
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* =========================
+           HERO
+        ========================== */
         .hero-hologram{
             background:rgba(8,15,30,.5);
             backdrop-filter:blur(15px);
             border:1px solid rgba(180,122,255,.4);
-            border-radius:4rem;
-            padding:3.5rem 3rem;
-            margin-bottom:5rem;
+            border-radius: var(--radius-xl);
+            padding: clamp(28px, 4vw, 56px);
+            margin-bottom: clamp(40px, 5vw, 80px);
             box-shadow:0 30px 60px -20px #000, 0 0 0 2px rgba(0,247,255,.2) inset;
             position:relative;
             overflow:hidden;
@@ -129,7 +300,21 @@
 
         @keyframes rotateGlow{ 0%{transform:rotate(0deg)} 100%{transform:rotate(360deg)} }
 
-        .avatar-tech{ width:200px; height:200px; margin:0 auto 2rem; position:relative; }
+        /* Layout del hero adaptable (cambia organización en tablet/cel) */
+        .hero-layout{
+            display:grid;
+            grid-template-columns: 1fr;
+            gap: var(--gap);
+            align-items:center;
+        }
+
+        .avatar-tech{
+            width: var(--avatar);
+            height: var(--avatar);
+            margin: 0 auto;
+            position:relative;
+            flex: 0 0 auto;
+        }
 
         .avatar-ring{
             position:absolute;
@@ -143,9 +328,7 @@
             mask-composite:exclude;
             animation:spin 10s linear infinite;
         }
-
         .avatar-ring:nth-child(2){ inset:-20px; opacity:.5; animation-duration:15s; animation-direction:reverse; }
-
         @keyframes spin{ 0%{transform:rotate(0deg)} 100%{transform:rotate(360deg)} }
 
         .profile-img{
@@ -159,18 +342,18 @@
             box-shadow:0 0 40px rgba(0,247,255,.5);
             transition:transform .4s ease;
         }
-
         .profile-img:hover{ transform:scale(calc(var(--profile-zoom) + .1)); }
 
         .glitch-tech{
             font-family:'Space Grotesk',sans-serif;
-            font-size:5rem;
+            font-size: var(--h1);
             font-weight:700;
             text-align:center;
             color:white;
             text-shadow:.03em 0 0 var(--neon-pink), -.03em -.02em 0 var(--neon-cyan);
             animation:glitchSkew 4s infinite alternate;
-            letter-spacing:8px;
+            letter-spacing: clamp(3px, 1.2vw, 8px);
+            line-height: 1.02;
         }
 
         @keyframes glitchSkew{
@@ -184,24 +367,31 @@
 
         .tagline-neon{
             text-align:center;
-            font-size:1.8rem;
+            font-size: var(--tagline);
             font-weight:500;
-            margin:1rem 0 2rem;
+            margin: .7rem 0 1.2rem;
             background:linear-gradient(135deg,#a0f0ff,#dab0ff,#ffb0e0);
             -webkit-background-clip:text;
             -webkit-text-fill-color:transparent;
         }
 
-        .social-tech{ display:flex; gap:2rem; justify-content:center; margin:2.5rem 0; }
+        .social-tech{
+            display:flex;
+            gap: clamp(12px, 2vw, 28px);
+            justify-content:center;
+            margin: clamp(18px, 3vw, 40px) 0;
+            flex-wrap: wrap;
+        }
 
         .social-item{
-            width:70px; height:70px;
+            width: clamp(52px, 7vw, 70px);
+            height: clamp(52px, 7vw, 70px);
             border-radius:50%;
             background:rgba(0,247,255,.05);
             backdrop-filter:blur(5px);
             border:1px solid rgba(0,247,255,.5);
             display:flex; align-items:center; justify-content:center;
-            font-size:2.2rem;
+            font-size: clamp(1.6rem, 3.2vw, 2.2rem);
             color:white;
             text-decoration:none;
             transition:.3s;
@@ -209,48 +399,53 @@
         }
 
         .social-item:hover{
-            transform:scale(1.2) translateY(-8px);
+            transform:scale(1.12) translateY(-6px);
             border-color:var(--neon-purple);
             box-shadow:0 0 40px var(--neon-purple);
         }
 
         .email-holo{
             text-align:center;
-            font-size:1.2rem;
-            padding:1rem 2.5rem;
+            font-size: clamp(1rem, 1.8vw, 1.2rem);
+            padding: .9rem 1.4rem;
             background:rgba(0,10,30,.7);
-            border-radius:50px;
+            border-radius:999px;
             width:fit-content;
             margin:0 auto;
             border:1px solid var(--neon-cyan);
             box-shadow:0 0 25px rgba(0,247,255,.4);
         }
-
         .email-holo a{ color:var(--neon-cyan); text-decoration:none; border-bottom:1px dashed; }
 
-        /* ===== TARJETAS ===== */
+        /* =========================
+           TARJETAS
+           - Grid fluido (no se ve mal en cada %)
+           - Cambia organización según tamaño (3 -> 2 -> 1)
+        ========================== */
         .tech-grid{
             display:grid;
-            grid-template-columns:repeat(3,1fr);
-            gap:2rem;
-            margin:5rem 0;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: var(--gap);
+            margin: clamp(36px, 6vw, 90px) 0;
+            align-items: stretch;
         }
 
         .tech-card{
             background:var(--bg-card);
             backdrop-filter:blur(12px);
-            border-radius:3rem;
-            padding:2.5rem 2rem;
+            border-radius: var(--radius-lg);
+            padding: clamp(22px, 2.6vw, 40px);
             border:1px solid rgba(180,122,255,.3);
             transition:all .3s cubic-bezier(.2,.9,.4,1);
             position:relative;
             overflow:hidden;
             z-index:2;
             box-shadow:0 30px 40px -20px black;
+            min-height: 100%;
         }
 
         .tech-card:hover{
-            transform:translateY(-20px) scale(1.02);
+            transform:translateY(-14px) scale(1.02);
             border-color:var(--neon-cyan);
             box-shadow:0 0 60px rgba(0,247,255,.4);
         }
@@ -266,120 +461,143 @@
             transition:opacity .4s, transform .5s;
         }
 
-        .tech-card:hover::before{ opacity:.25; transform:scale(1.1); }
+        .tech-card:hover::before{ opacity:.25; transform:scale(1.08); }
 
         .card-bg-4::before{ background-image:url('https://img.heresirc.com/Imagenes/paisaje4.jpg'); }
         .card-bg-5::before{ background-image:url('https://img.heresirc.com/Imagenes/paisaje5.jpg'); }
         .card-bg-6::before{ background-image:url('https://img.heresirc.com/Imagenes/paisaje6.jpg'); }
 
         .tech-icon{
-            font-size:3.5rem;
-            margin-bottom:1.8rem;
+            font-size: clamp(2.6rem, 4vw, 3.5rem);
+            margin-bottom: 1.2rem;
             color:var(--neon-cyan);
             filter:drop-shadow(0 0 15px var(--neon-purple));
         }
 
         .tech-card h3{
             font-family:'Space Grotesk',sans-serif;
-            font-size:2.3rem;
-            margin-bottom:1rem;
+            font-size: clamp(1.6rem, 2.5vw, 2.3rem);
+            margin-bottom: .8rem;
             background:linear-gradient(145deg,#fff,var(--neon-cyan));
             -webkit-background-clip:text;
             -webkit-text-fill-color:transparent;
         }
 
-        .tech-card p{ color:#cdd9ff; font-size:1.1rem; line-height:1.6; }
-
-        .tech-tag{
-            margin-top:2rem;
-            display:inline-block;
-            padding:.5rem 1.5rem;
-            background:rgba(0,247,255,.1);
-            border-radius:40px;
-            border:1px solid var(--neon-purple);
-            font-weight:600;
+        .tech-card p{
+            color:#cdd9ff;
+            font-size: var(--text);
+            line-height:1.65;
         }
 
-        /* ===== VALORES ===== */
+        .tech-tag{
+            margin-top: 1.3rem;
+            display:inline-flex;
+            align-items:center;
+            gap:10px;
+            padding:.5rem 1.1rem;
+            background:rgba(0,247,255,.1);
+            border-radius:999px;
+            border:1px solid var(--neon-purple);
+            font-weight:600;
+            width: fit-content;
+        }
+
+        /* =========================
+           VALORES
+        ========================== */
         .values-section{
             background:rgba(5,12,25,.7);
             backdrop-filter:blur(15px);
-            border-radius:4rem;
-            padding:3.5rem 3rem;
-            margin:4rem 0;
+            border-radius: var(--radius-xl);
+            padding: clamp(26px, 3.5vw, 56px);
+            margin: clamp(28px, 4vw, 70px) 0;
             border:1px solid rgba(0,247,255,.2);
             box-shadow:0 30px 50px -20px #000;
         }
 
         .section-title{
             font-family:'Space Grotesk',sans-serif;
-            font-size:3.5rem;
+            font-size: var(--h2);
             font-weight:700;
             display:flex;
+            flex-wrap: wrap;
+            justify-content:center;
             align-items:center;
-            gap:1.5rem;
-            margin-bottom:3rem;
+            gap: 14px;
+            margin-bottom: clamp(18px, 3.2vw, 48px);
             color:white;
             text-shadow:0 0 20px var(--neon-cyan);
+            text-align:center;
         }
-
-        .section-title i{ color:var(--neon-purple); font-size:3rem; }
+        .section-title i{ color:var(--neon-purple); font-size: clamp(1.8rem, 3vw, 3rem); }
 
         .values-grid{
             display:grid;
-            grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-            gap:2rem;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: clamp(12px, 2vw, 22px);
         }
 
         .value-item{
             display:flex;
             align-items:center;
-            gap:1.5rem;
+            gap: 14px;
             background:rgba(0,247,255,.05);
-            padding:1.2rem 2rem;
-            border-radius:60px;
+            padding: 14px 18px;
+            border-radius: 999px;
             border-left:6px solid var(--neon-cyan);
             transition:.2s;
+            min-height: 62px;
         }
 
         .value-item:hover{
             background:rgba(180,122,255,.15);
             border-left-color:var(--neon-purple);
-            transform:translateX(8px);
+            transform:translateX(6px);
         }
 
-        .value-item i{ font-size:2.5rem; color:var(--neon-pink); width:3rem; }
+        .value-item i{ font-size: clamp(1.8rem, 2.8vw, 2.5rem); color:var(--neon-pink); width: 2.4rem; flex: 0 0 auto; }
+
+        .value-item span{
+            font-size: clamp(.98rem, 1.5vw, 1.05rem);
+            color: #d8e3ff;
+        }
 
         .value-item span strong{
             color:var(--neon-cyan);
             font-family:'Space Grotesk',sans-serif;
-            font-size:1.3rem;
+            font-size: clamp(1.05rem, 1.8vw, 1.3rem);
         }
 
-        /* ===== FLOTANTES ===== */
+        /* =========================
+           FLOTANTES (más flex y que no “reviente”)
+        ========================== */
         .float-container{
             position:relative;
-            height:200px;
-            margin:3rem 0;
+            margin: clamp(18px, 3.5vw, 48px) 0;
             display:flex;
-            justify-content:space-around;
+            justify-content:center;
             align-items:center;
+            gap: clamp(12px, 3vw, 40px);
+            flex-wrap: wrap;
+            min-height: 140px;
         }
 
         .float-img{
-            width:150px; height:150px;
+            width: clamp(110px, 18vw, 150px);
+            height: clamp(110px, 18vw, 150px);
             object-fit:cover;
-            border-radius:30px;
+            border-radius: 24px;
             border:2px solid var(--neon-cyan);
             box-shadow:0 20px 40px -10px black, 0 0 40px rgba(0,247,255,.3);
             animation:float 8s infinite alternate ease-in-out;
             transform:rotate(5deg);
-            opacity:.8;
+            opacity:.85;
         }
 
         .float-img:nth-child(2){
             animation-delay:-2s;
-            width:180px; height:180px;
+            width: clamp(130px, 20vw, 180px);
+            height: clamp(130px, 20vw, 180px);
             border-color:var(--neon-purple);
         }
 
@@ -390,31 +608,77 @@
 
         @keyframes float{
             0%{transform:translateY(0) rotate(5deg)}
-            100%{transform:translateY(-40px) rotate(0deg)}
+            100%{transform:translateY(-28px) rotate(0deg)}
         }
 
-        /* ===== FOOTER ===== */
+        /* =========================
+           FOOTER
+        ========================== */
         .footer-tech{
             text-align:center;
-            padding:3rem 0 1rem;
+            padding: 2.6rem 0 1rem;
             border-top:1px solid rgba(0,247,255,.2);
-            margin-top:5rem;
+            margin-top: clamp(32px, 5vw, 80px);
             color:#98a9c7;
-            font-size:1rem;
+            font-size: clamp(.95rem, 1.4vw, 1rem);
         }
 
         .footer-tech a{ color:var(--neon-cyan); text-decoration:none; }
 
-        /* ===== RESPONSIVE ===== */
-        @media (max-width:1000px){
-            .tech-grid{ grid-template-columns:1fr; }
-            .glitch-tech{ font-size:3.5rem; }
-            .section-title{ font-size:2.8rem; }
+        /* =========================
+           RESPONSIVE: TABLET
+           - Cambia organización (2 columnas en cards)
+           - Menú cambia a mobile dock
+           - Se añade “espacio” abajo para que el dock no tape contenido
+        ========================== */
+        @media (max-width: 1024px){
+            .nav-neon{ display:none; }
+            .nav-mobile{ display:block; }
+            body{ padding-bottom: calc(var(--nav-h) + 36px + env(safe-area-inset-bottom)); }
+
+            .tech-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+            /* Hero: en tablet, el avatar a la izquierda y texto a la derecha */
+            .hero-layout{
+                grid-template-columns: auto 1fr;
+                align-items:center;
+            }
+            .hero-left{ justify-self:center; }
+            .hero-right{
+                text-align:left;
+            }
+            .hero-right .glitch-tech,
+            .hero-right .tagline-neon{
+                text-align:left;
+            }
+            .social-tech{ justify-content:flex-start; }
+            .email-holo{ margin-left: 0; }
         }
 
+        /* =========================
+           RESPONSIVE: MOBILE
+           - Cards a 1 columna
+           - Hero vuelve a columna centrada
+           - Menú panel en 1 columna para no apretar
+        ========================== */
+        @media (max-width: 640px){
+            html { scroll-padding-top: 28px; } /* ya no hay sticky arriba; usamos dock abajo */
+            .hero-layout{ grid-template-columns: 1fr; }
+            .hero-right{ text-align:center; }
+            .hero-right .glitch-tech,
+            .hero-right .tagline-neon{ text-align:center; }
+            .social-tech{ justify-content:center; }
+            .email-holo{ margin: 0 auto; }
+
+            .tech-grid{ grid-template-columns: 1fr; }
+
+            .nav-panel .grid{ grid-template-columns: 1fr; }
+        }
+
+        /* Reduce motion */
         @media (prefers-reduced-motion: reduce){
             .avatar-ring,.glitch-tech,.float-img{ animation:none!important; }
-            .tech-card,.social-item{ transition:none!important; }
+            .tech-card,.social-item,.nav-panel,.menu-btn{ transition:none!important; }
         }
     </style>
 </head>
@@ -422,9 +686,12 @@
 <body>
 <canvas id="particles-canvas"></canvas>
 
+<!-- Overlay para cerrar menú (tablet/cel) -->
+<div class="nav-overlay" id="navOverlay" aria-hidden="true"></div>
+
 <div class="site-wrapper">
-    <!-- NAVBAR -->
-    <nav class="nav-neon">
+    <!-- NAV DESKTOP -->
+    <nav class="nav-neon" aria-label="Navegación principal">
         <a href="#inicio"><i class="fas fa-home"></i><span>INICIO</span></a>
         <a href="#nosotros"><i class="fas fa-microchip"></i><span>ADN SIRC</span></a>
         <a href="#mision"><i class="fas fa-satellite"></i><span>MISIÓN</span></a>
@@ -433,64 +700,70 @@
     </nav>
 
     <!-- HERO -->
-    <div id="inicio" class="hero-hologram">
-        <div class="avatar-tech" id="avatarContainer">
-            <div class="avatar-ring"></div>
-            <div class="avatar-ring"></div>
+    <section id="inicio" class="hero-hologram">
+        <div class="hero-layout">
+            <div class="hero-left">
+                <div class="avatar-tech" id="avatarContainer">
+                    <div class="avatar-ring"></div>
+                    <div class="avatar-ring"></div>
+                    <img
+                            src="https://img.heresirc.com/Imagenes/perfil.jpg"
+                            alt="SIRC"
+                            class="profile-img"
+                            id="profileImg"
+                            loading="eager"
+                    />
+                </div>
+            </div>
 
-            <!-- ✅ Quitamos el onerror inline (para no romper el DOM) -->
-            <img
-                    src="https://img.heresirc.com/Imagenes/perfil.jpg"
-                    alt="SIRC"
-                    class="profile-img"
-                    id="profileImg"
-                    loading="eager"
-            />
+            <div class="hero-right">
+                <h1 class="glitch-tech">SIRC</h1>
+                <p class="tagline-neon">〄  inteligencia sintética · arquitectura cuántica  〄</p>
+
+                <div class="social-tech">
+                    <a href="#" class="social-item" style="color:#1877f2;" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-item" style="color:#e4405f;" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-item" style="color:#f0f0f0;" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                    <a href="#" class="social-item" style="color:#0a66c2;" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+
+                <div class="email-holo">
+                    <i class="fas fa-envelope" style="color:var(--neon-cyan);"></i>
+                    <a href="mailto:hola@heresirc.space">hola@heresirc.space</a>
+                </div>
+            </div>
         </div>
-
-        <h1 class="glitch-tech">SIRC</h1>
-        <p class="tagline-neon">〄  inteligencia sintética · arquitectura cuántica  〄</p>
-
-        <div class="social-tech">
-            <a href="#" class="social-item" style="color:#1877f2;"><i class="fab fa-facebook-f"></i></a>
-            <a href="#" class="social-item" style="color:#e4405f;"><i class="fab fa-instagram"></i></a>
-            <a href="#" class="social-item" style="color:#f0f0f0;"><i class="fab fa-github"></i></a>
-            <a href="#" class="social-item" style="color:#0a66c2;"><i class="fab fa-linkedin-in"></i></a>
-        </div>
-
-        <div class="email-holo">
-            <i class="fas fa-envelope" style="color:var(--neon-cyan);"></i>
-            <a href="mailto:hola@heresirc.space">hola@heresirc.space</a>
-        </div>
-    </div>
+    </section>
 
     <!-- TARJETAS -->
-    <div class="tech-grid" id="nosotros">
-        <div class="tech-card card-bg-4">
+    <section class="tech-grid" id="nosotros" aria-label="Secciones principales">
+        <article class="tech-card card-bg-4">
             <div class="tech-icon"><i class="fas fa-dna"></i></div>
             <h3>ADN SIRC</h3>
             <p>Como el <strong>paisaje 4</strong> —valles de datos infinitos— tejemos algoritmos con la serenidad de la naturaleza. Nuestra arquitectura combina ética y deep learning.</p>
             <span class="tech-tag"><i class="fas fa-cog"></i> núcleo cuántico</span>
-        </div>
+        </article>
 
-        <div class="tech-card card-bg-5" id="mision">
+        <article class="tech-card card-bg-5" id="mision">
             <div class="tech-icon"><i class="fas fa-rocket"></i></div>
             <h3>MISIÓN</h3>
             <p>Inspirados en el <strong>cañón digital (paisaje 5)</strong>: transformar estructuras rígidas en experiencias fluidas. Democratizamos la inteligencia artificial con luz propia.</p>
             <span class="tech-tag"><i class="fas fa-bolt"></i> aceleración cognitiva</span>
-        </div>
+        </article>
 
-        <div class="tech-card card-bg-6" id="vision">
+        <article class="tech-card card-bg-6" id="vision">
             <div class="tech-icon"><i class="fas fa-globe"></i></div>
             <h3>VISIÓN</h3>
             <p>Un <strong>archipiélago de innovación (paisaje 6)</strong> conectado por redes cuánticas. Ser el puente entre la humanidad y la próxima frontera tecnológica.</p>
             <span class="tech-tag"><i class="fas fa-sparkles"></i> 2050 · sin límites</span>
-        </div>
-    </div>
+        </article>
+    </section>
 
     <!-- VALORES -->
-    <div id="valores" class="values-section">
-        <h2 class="section-title"><i class="fas fa-cubes"></i> PRINCIPIOS <span style="color:var(--neon-cyan);">SIRC</span> <i class="fas fa-cubes"></i></h2>
+    <section id="valores" class="values-section">
+        <h2 class="section-title">
+            <i class="fas fa-cubes"></i> PRINCIPIOS <span style="color:var(--neon-cyan);">SIRC</span> <i class="fas fa-cubes"></i>
+        </h2>
         <div class="values-grid">
             <div class="value-item"><i class="fas fa-leaf"></i> <span><strong>PAISAJE 4 · serenidad</strong> — algoritmos conscientes</span></div>
             <div class="value-item"><i class="fas fa-fire"></i> <span><strong>PAISAJE 5 · transformación</strong> — evolución constante</span></div>
@@ -499,21 +772,46 @@
             <div class="value-item"><i class="fas fa-infinity"></i> <span><strong>curiosidad</strong> — exploración sin fronteras</span></div>
             <div class="value-item"><i class="fas fa-hand-holding-heart"></i> <span><strong>comunidad</strong> — tecnología para todos</span></div>
         </div>
-    </div>
+    </section>
 
     <!-- FLOTANTES -->
-    <div class="float-container">
+    <section class="float-container" aria-label="Galería flotante">
         <img src="https://img.heresirc.com/Imagenes/paisaje4.jpg" alt="paisaje 4" class="float-img" loading="lazy" />
         <img src="https://img.heresirc.com/Imagenes/paisaje5.jpg" alt="paisaje 5" class="float-img" loading="lazy" />
         <img src="https://img.heresirc.com/Imagenes/paisaje6.jpg" alt="paisaje 6" class="float-img" loading="lazy" />
-    </div>
+    </section>
 
     <!-- FOOTER -->
-    <div class="footer-tech">
+    <footer class="footer-tech">
         ✦ <strong>SIRC</strong> · donde los paisajes 4,5,6 se convierten en código ✦ <br />
         © 2025 — imaginación cuántica · <a href="mailto:hola@heresirc.space">hola@heresirc.space</a>
-    </div>
+    </footer>
 </div>
+
+<!-- NAV MOBILE (TABLET/CEL) -->
+<nav class="nav-mobile" aria-label="Navegación móvil">
+    <div class="nav-panel" id="navPanel" aria-hidden="true">
+        <div class="grid">
+            <a href="#inicio" data-navlink><i class="fas fa-home"></i> INICIO</a>
+            <a href="#nosotros" data-navlink><i class="fas fa-microchip"></i> ADN SIRC</a>
+            <a href="#mision" data-navlink><i class="fas fa-satellite"></i> MISIÓN</a>
+            <a href="#vision" data-navlink><i class="fas fa-eye"></i> VISIÓN</a>
+            <a href="#valores" data-navlink><i class="fas fa-cube"></i> VALORES</a>
+        </div>
+    </div>
+
+    <div class="dock">
+        <div class="brand-mini" aria-hidden="true">
+            <div class="brand-dot">S</div>
+            <span>SIRC</span>
+        </div>
+
+        <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="navPanel">
+            <i class="fas fa-bars"></i>
+            MENÚ
+        </button>
+    </div>
+</nav>
 
 <!-- SCRIPTS -->
 <script>
@@ -653,16 +951,13 @@
         if (!img) return;
 
         function applyFallback() {
-            // Si el navegador dispara error dos veces, evitamos duplicados
             if (img.dataset.fallbackApplied === "1") return;
             img.dataset.fallbackApplied = "1";
 
             const container = img.closest(".avatar-tech");
-            if (!container) return; // ✅ evita "appendChild of null"
+            if (!container) return;
 
             img.style.display = "none";
-
-            // Evita insertar dos fallbacks si algo raro pasa
             if (container.querySelector(".profile-fallback")) return;
 
             const fallbackDiv = document.createElement("div");
@@ -673,11 +968,59 @@
             container.appendChild(fallbackDiv);
         }
 
-        // Si falla la carga
         img.addEventListener("error", applyFallback, { once: true });
-
-        // Extra: si ya viene rota/cached como error en algunos casos raros
         if (img.complete && img.naturalWidth === 0) applyFallback();
+    })();
+
+    // ===== MENÚ TABLET/CEL (dock abajo + panel) =====
+    (function () {
+        const btn = document.getElementById("menuBtn");
+        const panel = document.getElementById("navPanel");
+        const overlay = document.getElementById("navOverlay");
+        if (!btn || !panel || !overlay) return;
+
+        const links = panel.querySelectorAll("[data-navlink]");
+
+        function openMenu(){
+            panel.classList.add("open");
+            overlay.classList.add("open");
+            btn.setAttribute("aria-expanded", "true");
+            panel.setAttribute("aria-hidden", "false");
+            overlay.setAttribute("aria-hidden", "false");
+            document.documentElement.style.overflow = "hidden"; // evita scroll detrás
+        }
+
+        function closeMenu(){
+            panel.classList.remove("open");
+            overlay.classList.remove("open");
+            btn.setAttribute("aria-expanded", "false");
+            panel.setAttribute("aria-hidden", "true");
+            overlay.setAttribute("aria-hidden", "true");
+            document.documentElement.style.overflow = ""; // restaura
+        }
+
+        function toggleMenu(){
+            const isOpen = panel.classList.contains("open");
+            isOpen ? closeMenu() : openMenu();
+        }
+
+        btn.addEventListener("click", toggleMenu);
+        overlay.addEventListener("click", closeMenu);
+
+        // Cerrar al navegar
+        links.forEach(a => a.addEventListener("click", () => {
+            closeMenu();
+        }));
+
+        // Cerrar con ESC
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape") closeMenu();
+        });
+
+        // Si se cambia a desktop, cerramos por si acaso
+        window.addEventListener("resize", () => {
+            if (window.matchMedia("(min-width: 1025px)").matches) closeMenu();
+        });
     })();
 </script>
 </body>
