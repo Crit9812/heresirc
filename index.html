@@ -34,7 +34,7 @@
             width: 100%;
             height: 100%;
             z-index: 1;
-            pointer-events: none; /* para poder hacer clic en los elementos de arriba */
+            pointer-events: none;
         }
 
         /* Contenedor principal (por encima del canvas) */
@@ -269,7 +269,7 @@
         }
 
         @media (max-width: 500px) {
-            .floating-images { display: none; } /* se ven bien en desktop */
+            .floating-images { display: none; }
         }
     </style>
 </head>
@@ -278,22 +278,22 @@
 <!-- Canvas para partículas (fondo dinámico) -->
 <canvas id="particles-canvas"></canvas>
 
-<!-- Imágenes flotantes decorativas (¡IMPORTANTE! Son las imágenes que deberás reemplazar) -->
+<!-- Imágenes flotantes decorativas con URLs funcionales -->
 <div class="floating-images">
-    <img src="https://img.heresirc.com/Imagenes/paisaje1.jpg" alt="floating-1" class="floating-img floating-img-1">
-    <img src="https://img.heresirc.com/Imagenes/paisaje2.jpg" alt="floating-2" class="floating-img floating-img-2">
-    <img src="https://img.heresirc.com/Imagenes/paisaje3.jpg" alt="floating-3" class="floating-img floating-img-3">
-    <img src="https://img.heresirc.com/Imagenes/paisaje4.jpg" alt="floating-4" class="floating-img floating-img-4">
-    <img src="https://img.heresirc.com/Imagenes/paisaje5.jpg" alt="floating-5" class="floating-img floating-img-5">
-    <img src="https://img.heresirc.com/Imagenes/paisaje6.jpg" alt="floating-6" class="floating-img floating-img-6">
+    <img src="https://picsum.photos/id/101/200/200" alt="floating-1" class="floating-img floating-img-1">
+    <img src="https://picsum.photos/id/102/200/200" alt="floating-2" class="floating-img floating-img-2">
+    <img src="https://picsum.photos/id/103/200/200" alt="floating-3" class="floating-img floating-img-3">
+    <img src="https://picsum.photos/id/104/200/200" alt="floating-4" class="floating-img floating-img-4">
+    <img src="https://picsum.photos/id/106/200/200" alt="floating-5" class="floating-img floating-img-5">
+    <img src="https://picsum.photos/id/108/200/200" alt="floating-6" class="floating-img floating-img-6">
 </div>
 
 <!-- Contenido principal -->
 <div class="main-content">
     <div class="glass-card">
-        <!-- Foto de perfil (reemplazar) -->
+        <!-- Foto de perfil con URL funcional (¡AHORA SÍ SE VE!) -->
         <div class="profile-img-wrapper">
-            <img src="https://img.heresirc.com/Imagenes/perfil.jpg" alt="Heresirc profile" class="profile-img">
+            <img src="https://picsum.photos/id/100/300/300" alt="Heresirc profile" class="profile-img">
         </div>
 
         <h1 class="glitch">HERESIRC</h1>
@@ -317,7 +317,7 @@
     </div>
 </div>
 
-<!-- Script para las partículas del fondo (super creativo) -->
+<!-- Script para las partículas del fondo -->
 <script>
     (function() {
         const canvas = document.getElementById('particles-canvas');
@@ -350,7 +350,6 @@
             ctx.fillStyle = '#0a0f1e';
             ctx.fillRect(0, 0, width, height);
 
-            // Dibujar partículas
             particles.forEach(p => {
                 ctx.beginPath();
                 ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
@@ -358,7 +357,6 @@
                 ctx.fill();
             });
 
-            // Dibujar líneas entre partículas cercanas
             ctx.strokeStyle = 'rgba(100, 180, 255, 0.1)';
             ctx.lineWidth = 0.6;
             for (let i = 0; i < particles.length; i++) {
@@ -376,16 +374,13 @@
                 }
             }
 
-            // Mover partículas
             particles.forEach(p => {
                 p.x += p.vx;
                 p.y += p.vy;
 
-                // Rebotar en bordes
                 if (p.x < 0 || p.x > width) p.vx *= -1;
                 if (p.y < 0 || p.y > height) p.vy *= -1;
 
-                // Mantener dentro
                 p.x = Math.min(Math.max(p.x, 0), width);
                 p.y = Math.min(Math.max(p.y, 0), height);
             });
@@ -402,6 +397,5 @@
     })();
 </script>
 
-<!-- Pequeño efecto adicional: los iconos también tienen brillo -->
 </body>
 </html>
