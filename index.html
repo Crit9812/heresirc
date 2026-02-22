@@ -27,6 +27,8 @@
             max-width: 1280px;
             margin: 0 auto;
             padding: 0 24px;
+            position: relative;
+            z-index: 5;
         }
 
         h1, h2, h3, .nav-link, .btn-like, .tag-nike {
@@ -59,16 +61,21 @@
         .accent { color: #ff5e00; }
         .accent-bg { background-color: #ff5e00; color: white; }
 
-        /* ----- NAVBAR ----- */
+        /* ----- NAVBAR (semi-transparente para que se vea fondo) ----- */
         .nav-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 1.5rem 0;
-            border-bottom: 2px solid #eee;
+            border-bottom: 2px solid rgba(255,255,255,0.25);
             margin-bottom: 2rem;
             flex-wrap: wrap;
-            position: relative; /* para el dropdown en móvil */
+            position: relative;
+            backdrop-filter: blur(4px);
+            background-color: rgba(255,255,255,0.2);
+            border-radius: 0 0 20px 20px;
+            padding-left: 1rem;
+            padding-right: 1rem;
         }
 
         .logo {
@@ -76,8 +83,9 @@
             font-size: 2rem;
             font-weight: 700;
             letter-spacing: -0.02em;
-            color: #111;
+            color: #fff;
             text-decoration: none;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.3);
         }
         .logo span { color: #ff5e00; }
 
@@ -90,10 +98,12 @@
         }
         .nav-links a {
             text-decoration: none;
-            color: #111;
+            color: #fff;
             border-bottom: 2px solid transparent;
             padding-bottom: 0.25rem;
             transition: border 0.15s;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            font-weight: 700;
         }
         .nav-links a:hover {
             border-bottom-color: #ff5e00;
@@ -104,11 +114,108 @@
             background: none;
             border: none;
             font-size: 1.8rem;
-            color: #111;
+            color: white;
             cursor: pointer;
+            text-shadow: 0 2px 5px black;
         }
 
-        /* ----- HERO (dos columnas) ----- */
+        /* ----- SECCIONES CON FONDO Y ANIMACIONES ----- */
+        .bg-section {
+            position: relative;
+            background-attachment: fixed; /* efecto parallax suave */
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            isolation: isolate;
+        }
+
+        /* Fondo para la primera sección (hero) */
+        .bg-section-hero {
+            background-image: url('https://img.heresirc.com/Imagenes/paisaje4.jpg');
+            background-attachment: fixed;
+            background-position: center 30%;
+        }
+
+        /* Fondo para la segunda sección (cards + misión/visión) */
+        .bg-section-middle {
+            background-image: url('https://img.heresirc.com/Imagenes/paisaje5.jpg');
+            background-attachment: fixed;
+            background-position: center 40%;
+        }
+
+        /* Fondo para la tercera sección (valores + galería) */
+        .bg-section-bottom {
+            background-image: url('https://img.heresirc.com/Imagenes/paisaje6.jpg');
+            background-attachment: fixed;
+            background-position: center 20%;
+        }
+
+        /* capa oscura para legibilidad */
+        .bg-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.35); /* más oscuro para que resalte el texto */
+            z-index: -1;
+            backdrop-filter: blur(2px);
+        }
+
+        /* ajuste de color de texto sobre fondos oscuros */
+        .bg-section .hero-right h1,
+        .bg-section .hero-right .tagline-neon,
+        .bg-section .hero-right p,
+        .bg-section .hero-right .email-holo,
+        .bg-section .hero-right .email-holo a,
+        .bg-section .tech-card h3,
+        .bg-section .tech-card p,
+        .bg-section .section-title,
+        .bg-section .value-item span,
+        .bg-section .value-item i,
+        .bg-section .footer-tech,
+        .bg-section .footer-tech strong,
+        .bg-section .footer-tech a {
+            color: #fff;
+            border-color: rgba(255,255,255,0.5);
+        }
+
+        .bg-section .value-item {
+            background: rgba(0,0,0,0.4);
+            border-left-color: #ff5e00;
+            backdrop-filter: blur(5px);
+        }
+
+        .bg-section .tech-card {
+            background: rgba(0, 0, 0, 0.5);
+            border-color: rgba(255,255,255,0.15);
+            backdrop-filter: blur(8px);
+            color: white;
+        }
+
+        .bg-section .tech-card p {
+            color: #f0f0f0;
+        }
+
+        .bg-section .email-holo {
+            background: rgba(0,0,0,0.4);
+            border-left-color: #ff5e00;
+        }
+
+        .bg-section .btn-like {
+            background: #ff5e00;
+            border-color: #ff5e00;
+            color: #fff;
+        }
+        .bg-section .btn-like.outline {
+            background: transparent;
+            border-color: #fff;
+            color: #fff;
+        }
+        .bg-section .btn-like.outline:hover {
+            border-color: #ff5e00;
+            color: #ff5e00;
+        }
+
+        /* ----- HERO (con circulo blanco y animación del logo) ----- */
         .hero-nike {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -120,15 +227,37 @@
         .hero-left {
             display: flex;
             justify-content: center;
+            position: relative;
+            z-index: 10;
         }
+
+        /* CÍRCULO BLANCO que resalta el logo */
         .avatar-tech {
             width: min(320px, 80%);
             aspect-ratio: 1/1;
             border-radius: 50%;
             overflow: hidden;
-            border: 4px solid #111;
-            box-shadow: 0 20px 30px -10px rgba(0,0,0,0.2);
+            border: 6px solid rgba(255, 255, 255, 0.95); /* círculo blanco */
+            box-shadow: 0 0 40px rgba(255,255,255,0.6), 0 20px 30px -5px black;
+            background-color: white; /* por si la imagen falla, fondo blanco */
+            animation: floatLogo 3s ease-in-out infinite, fadeInUp 1s ease-out;
+            transition: transform 0.3s;
         }
+        .avatar-tech:hover {
+            transform: scale(1.02);
+        }
+
+        @keyframes floatLogo {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .profile-img {
             width: 100%;
             height: 100%;
@@ -136,22 +265,29 @@
             object-position: var(--profile-pos-x, 50%) var(--profile-pos-y, 25%);
             transform: scale(var(--profile-zoom, 1.1));
             display: block;
+            filter: drop-shadow(0 0 10px rgba(0,0,0,0.3));
         }
 
         .hero-right {
             display: flex;
             flex-direction: column;
             gap: 1.2rem;
+            animation: fadeInRight 1s ease-out;
         }
+        @keyframes fadeInRight {
+            from { opacity: 0; transform: translateX(40px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
         .tagline-neon {
             font-size: 1.15rem;
             font-weight: 600;
-            color: #333;
+            color: #fff;
             letter-spacing: -0.01em;
             text-transform: uppercase;
         }
         .hero-copy {
-            color: #444;
+            color: #fff;
             font-size: 1.05rem;
             max-width: 44ch;
         }
@@ -178,14 +314,6 @@
             gap: 0.55rem;
         }
         .btn-like:hover { transform: translateY(-2px); }
-        .btn-like.outline {
-            background: transparent;
-            color: #111;
-        }
-        .btn-like.outline:hover {
-            border-color: #ff5e00;
-            color: #ff5e00;
-        }
 
         .social-tech {
             display: flex;
@@ -194,8 +322,9 @@
         }
         .social-item {
             font-size: 1.8rem;
-            color: #111;
+            color: white;
             transition: color 0.2s, transform 0.1s;
+            text-shadow: 0 2px 8px black;
         }
         .social-item:hover {
             color: #ff5e00;
@@ -206,20 +335,21 @@
             font-size: 1.05rem;
             border-left: 4px solid #ff5e00;
             padding-left: 1rem;
-            background: #f5f5f5;
+            background: rgba(0,0,0,0.3);
             padding: 0.8rem 1.5rem;
             width: fit-content;
             margin-top: 0.2rem;
+            backdrop-filter: blur(5px);
         }
         .email-holo a {
-            color: #111;
+            color: white;
             text-decoration: none;
             font-weight: 700;
-            border-bottom: 1px solid #aaa;
+            border-bottom: 1px solid rgba(255,255,255,0.5);
         }
         .email-holo a:hover { color: #ff5e00; }
 
-        /* ----- CARDS ----- */
+        /* ----- CARDS con animación al aparecer ----- */
         .tech-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -228,19 +358,31 @@
         }
 
         .tech-card {
-            background: #fafafa;
-            border: 1px solid #e0e0e0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
             padding: 2rem 1.5rem 1.8rem;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
             display: flex;
             flex-direction: column;
-            border-radius: 0;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.02);
+            border-radius: 12px;
+            box-shadow: 0 15px 30px -10px rgba(0,0,0,0.5);
+            opacity: 0;
+            transform: translateY(40px);
+            animation: cardAppear 0.8s forwards;
         }
+        .tech-card:nth-child(1) { animation-delay: 0.1s; }
+        .tech-card:nth-child(2) { animation-delay: 0.3s; }
+        .tech-card:nth-child(3) { animation-delay: 0.5s; }
+
+        @keyframes cardAppear {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .tech-card:hover {
             border-color: #ff5e00;
-            transform: translateY(-6px);
-            box-shadow: 0 20px 30px -12px rgba(255,94,0,0.2);
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 30px 40px -12px #ff5e0080;
         }
 
         .tech-icon {
@@ -255,7 +397,7 @@
             margin-bottom: 0.8rem;
         }
         .tech-card p {
-            color: #333;
+            color: #f0f0f0;
             font-weight: 400;
             margin-bottom: 1.8rem;
             flex: 1;
@@ -277,10 +419,10 @@
             background: #ff5e00;
         }
 
-        /* ----- VALORES ----- */
+        /* ----- VALORES con animación scroll (activada por JS) ----- */
         .values-section {
             margin: 5rem 0;
-            border-top: 2px solid #111;
+            border-top: 2px solid rgba(255,255,255,0.25);
             padding-top: 3rem;
         }
         .section-title {
@@ -290,6 +432,7 @@
             display: flex;
             align-items: center;
             gap: 0.8rem;
+            color: white;
         }
         .section-title i {
             color: #ff5e00;
@@ -305,14 +448,23 @@
             align-items: center;
             gap: 1rem;
             padding: 1rem 1.2rem;
-            background: #f5f5f5;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(8px);
             border-left: 5px solid #ff5e00;
             font-weight: 600;
-            color: #222;
+            color: white;
+            border-radius: 0 12px 12px 0;
+            opacity: 0;
+            transform: translateX(-30px);
+            transition: opacity 0.6s, transform 0.6s;
+        }
+        .value-item.visible {
+            opacity: 1;
+            transform: translateX(0);
         }
         .value-item i {
             font-size: 1.7rem;
-            color: #111;
+            color: #ff5e00;
             width: 2rem;
         }
         .value-item span strong {
@@ -320,7 +472,7 @@
             font-weight: 800;
         }
 
-        /* ----- GALERÍA ----- */
+        /* ----- GALERÍA con zoom suave al hacer scroll ----- */
         .float-container {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -331,26 +483,39 @@
             width: 100%;
             aspect-ratio: 4/3;
             object-fit: cover;
-            border: 2px solid #111;
-            transition: transform 0.3s, border-color 0.2s;
+            border: 3px solid rgba(255,255,255,0.7);
+            transition: transform 0.5s, border-color 0.3s, box-shadow 0.3s;
+            opacity: 0;
+            transform: scale(0.9);
+            animation: imgAppear 0.8s forwards;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
         }
+        .float-img:nth-child(1) { animation-delay: 0.2s; }
+        .float-img:nth-child(2) { animation-delay: 0.4s; }
+        .float-img:nth-child(3) { animation-delay: 0.6s; }
+
+        @keyframes imgAppear {
+            to { opacity: 1; transform: scale(1); }
+        }
+
         .float-img:hover {
-            transform: scale(1.02);
+            transform: scale(1.05);
             border-color: #ff5e00;
+            box-shadow: 0 20px 30px #ff5e0040;
         }
 
         /* ----- FOOTER ----- */
         .footer-tech {
-            border-top: 2px solid #ddd;
+            border-top: 2px solid rgba(255,255,255,0.2);
             padding: 2.5rem 0 2rem;
             margin-top: 3rem;
             text-align: center;
-            color: #555;
+            color: #fff;
             font-weight: 400;
         }
-        .footer-tech strong { color: #111; }
+        .footer-tech strong { color: #ff5e00; }
         .footer-tech a {
-            color: #111;
+            color: #fff;
             font-weight: 700;
             text-decoration: none;
             border-bottom: 1px solid #ff5e00;
@@ -362,12 +527,8 @@
 
         /* ====== FIX MENÚ MÓVIL ====== */
         @media (max-width: 768px) {
-            .nav-bar { padding: 1rem 0; }
-
-            /* el botón sí aparece */
+            .nav-bar { padding: 1rem 0; background: rgba(0,0,0,0.5); }
             .menu-toggle { display: block; }
-
-            /* menú oculto por defecto */
             .nav-links {
                 display: none;
                 width: 100%;
@@ -375,17 +536,16 @@
                 gap: 0.9rem;
                 padding: 1rem 0 0.2rem;
                 margin-top: 1rem;
-                border-top: 2px solid #eee;
+                border-top: 2px solid rgba(255,255,255,0.2);
+                background: rgba(0,0,0,0.6);
+                backdrop-filter: blur(10px);
+                border-radius: 12px;
             }
-            /* menú visible cuando está activo */
             .nav-links.is-open { display: flex; }
-
             .nav-links a {
                 padding: 0.6rem 0;
-                border-bottom: 1px solid #eee;
+                border-bottom: 1px solid rgba(255,255,255,0.2);
             }
-            .nav-links a:last-child { border-bottom: none; }
-
             .hero-nike {
                 grid-template-columns: 1fr;
                 text-align: center;
@@ -393,15 +553,12 @@
             .hero-right { align-items: center; }
             .email-holo { margin: 0.2rem auto 0; }
             .cta-row { justify-content: center; }
-
             .tech-grid { grid-template-columns: 1fr; }
             .values-grid { grid-template-columns: 1fr; }
             .float-container { grid-template-columns: 1fr; }
         }
 
         section, div[id] { scroll-margin-top: 100px; }
-
-        #particles-canvas { display: none; }
 
         :root {
             --profile-pos-x: 50%;
@@ -412,138 +569,124 @@
 </head>
 <body>
 
-<div class="nike-wrapper">
-    <nav class="nav-bar">
-        <a href="#" class="logo">SIRC<span>.</span></a>
-
-        <div class="nav-links" id="mobileNav">
-            <a href="#inicio">INICIO</a>
-            <a href="#nosotros">ADN</a>
-            <a href="#mision">MISIÓN</a>
-            <a href="#vision">VISIÓN</a>
-            <a href="#valores">VALORES</a>
-        </div>
-
-        <button class="menu-toggle" id="menuToggle" aria-label="Menú" aria-expanded="false" aria-controls="mobileNav">
-            <i class="fas fa-bars"></i>
-        </button>
-    </nav>
-
-    <!-- HERO -->
-    <section id="inicio" class="hero-nike">
-        <div class="hero-left">
-            <div class="avatar-tech" id="avatarContainer">
-                <img src="https://img.heresirc.com/Imagenes/icono.png" alt="SIRC" class="profile-img" id="profileImg" />
+<!-- SECCIÓN 1 (HERO) con fondo paisaje4.jpg -->
+<section class="bg-section bg-section-hero">
+    <div class="nike-wrapper">
+        <nav class="nav-bar">
+            <a href="#" class="logo">SIRC<span>.</span></a>
+            <div class="nav-links" id="mobileNav">
+                <a href="#inicio">INICIO</a>
+                <a href="#nosotros">ADN</a>
+                <a href="#mision">MISIÓN</a>
+                <a href="#vision">VISIÓN</a>
+                <a href="#valores">VALORES</a>
             </div>
-        </div>
+            <button class="menu-toggle" id="menuToggle" aria-label="Menú" aria-expanded="false" aria-controls="mobileNav">
+                <i class="fas fa-bars"></i>
+            </button>
+        </nav>
 
-        <div class="hero-right">
-            <div class="tagline-neon">Diseño. Desarrollo. Lanzamiento. <span class="accent">Webs que venden.</span></div>
-            <h1>CREAMOS <span class="accent">PÁGINAS WEB</span></h1>
-            <p class="hero-copy">
-                En SIRC diseñamos y construimos sitios rápidos, claros y listos para convertir:
-                landing pages, sitios corporativos, portfolios y e-commerce. Sin ruido, con resultados.
-            </p>
-
-            <div class="cta-row">
-                <a class="btn-like" href="mailto:hola@heresirc.space?subject=Cotizaci%C3%B3n%20web%20-%20SIRC">
-                    <i class="fas fa-paper-plane"></i> COTIZAR PROYECTO
-                </a>
-                <a class="btn-like outline" href="#nosotros">
-                    <i class="fas fa-layer-group"></i> VER ENFOQUE
-                </a>
+        <!-- HERO -->
+        <section id="inicio" class="hero-nike">
+            <div class="hero-left">
+                <div class="avatar-tech" id="avatarContainer">
+                    <img src="https://img.heresirc.com/Imagenes/icono.png" alt="SIRC" class="profile-img" id="profileImg" />
+                </div>
             </div>
-
-            <div class="social-tech">
-                <a href="https://www.facebook.com/share/1897MroDnf/"
-                   class="social-item"
-                   aria-label="Facebook"
-                   target="_blank"
-                   rel="noopener noreferrer">
-                    <i class="fab fa-facebook-f"></i>
-                </a>
-
-                <a href="https://www.instagram.com/cris_tellezz/"
-                   class="social-item"
-                   aria-label="Instagram"
-                   target="_blank"
-                   rel="noopener noreferrer">
-                    <i class="fab fa-instagram"></i>
-                </a>
-
-                <a href="#" class="social-item" aria-label="GitHub">
-                    <i class="fab fa-github"></i>
-                </a>
-
-                <a href="#" class="social-item" aria-label="LinkedIn">
-                    <i class="fab fa-linkedin-in"></i>
-                </a>
+            <div class="hero-right">
+                <div class="tagline-neon">Diseño. Desarrollo. Lanzamiento. <span class="accent">Webs que venden.</span></div>
+                <h1>CREAMOS <span class="accent">PÁGINAS WEB</span></h1>
+                <p class="hero-copy">
+                    En SIRC diseñamos y construimos sitios rápidos, claros y listos para convertir:
+                    landing pages, sitios corporativos, portfolios y e-commerce. Sin ruido, con resultados.
+                </p>
+                <div class="cta-row">
+                    <a class="btn-like" href="mailto:hola@heresirc.space?subject=Cotizaci%C3%B3n%20web%20-%20SIRC">
+                        <i class="fas fa-paper-plane"></i> COTIZAR PROYECTO
+                    </a>
+                    <a class="btn-like outline" href="#nosotros">
+                        <i class="fas fa-layer-group"></i> VER ENFOQUE
+                    </a>
+                </div>
+                <div class="social-tech">
+                    <a href="https://www.facebook.com/share/1897MroDnf/" class="social-item" aria-label="Facebook" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://www.instagram.com/cris_tellezz/" class="social-item" aria-label="Instagram" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-item" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                    <a href="#" class="social-item" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+                <div class="email-holo">
+                    Escribe a: <a href="mailto:hola@heresirc.space">hola@heresirc.space</a>
+                </div>
             </div>
+        </section>
+    </div>
+</section>
 
-            <div class="email-holo">
-                Escribe a: <a href="mailto:hola@heresirc.space">hola@heresirc.space</a>
+<!-- SECCIÓN 2 (CARDS + MISIÓN + VISIÓN) con fondo paisaje5.jpg -->
+<section class="bg-section bg-section-middle">
+    <div class="nike-wrapper">
+        <!-- CARDS -->
+        <section class="tech-grid" id="nosotros">
+            <article class="tech-card">
+                <div class="tech-icon"><i class="fas fa-laptop-code"></i></div>
+                <h3>ADN SIRC</h3>
+                <p>
+                    Construimos con mentalidad de producto: <strong>claridad visual</strong>, estructura sólida y rendimiento.
+                    Tu web debe cargar rápido, verse increíble y guiar al usuario directo a la acción.
+                </p>
+                <span class="tech-tag"><i class="fas fa-gauge-high" style="margin-right:6px;"></i> performance real</span>
+            </article>
+            <article class="tech-card" id="mision">
+                <div class="tech-icon"><i class="fas fa-rocket"></i></div>
+                <h3>MISIÓN</h3>
+                <p>
+                    Crear páginas web que <strong>conviertan visitas en clientes</strong>.
+                    Diseñamos experiencias simples y elegantes, optimizadas para móvil, SEO y velocidad desde el día uno.
+                </p>
+                <span class="tech-tag"><i class="fas fa-bolt" style="margin-right:6px;"></i> lanzamientos rápidos</span>
+            </article>
+            <article class="tech-card" id="vision">
+                <div class="tech-icon"><i class="fas fa-globe"></i></div>
+                <h3>VISIÓN</h3>
+                <p>
+                    Ser el aliado de referencia para negocios que quieren crecer en digital:
+                    <strong>webs modernas</strong>, escalables y fáciles de mantener, con resultados medibles y mejora continua.
+                </p>
+                <span class="tech-tag"><i class="fas fa-chart-line" style="margin-right:6px;"></i> crecimiento sostenido</span>
+            </article>
+        </section>
+    </div>
+</section>
+
+<!-- SECCIÓN 3 (VALORES + GALERÍA + FOOTER) con fondo paisaje6.jpg -->
+<section class="bg-section bg-section-bottom">
+    <div class="nike-wrapper">
+        <!-- VALORES -->
+        <section id="valores" class="values-section">
+            <h2 class="section-title"><i class="fas fa-cubes"></i> PRINCIPIOS SIRC <i class="fas fa-cubes"></i></h2>
+            <div class="values-grid" id="valuesGrid">
+                <div class="value-item"><i class="fas fa-ruler-combined"></i> <span><strong>claridad</strong> — diseño que se entiende en 5 segundos</span></div>
+                <div class="value-item"><i class="fas fa-mobile-screen-button"></i> <span><strong>mobile first</strong> — pensado para el pulgar y la velocidad</span></div>
+                <div class="value-item"><i class="fas fa-gauge-high"></i> <span><strong>rendimiento</strong> — carga rápida, Core Web Vitals en mente</span></div>
+                <div class="value-item"><i class="fas fa-magnifying-glass"></i> <span><strong>SEO base</strong> — estructura, etiquetas y contenido encontrable</span></div>
+                <div class="value-item"><i class="fas fa-shield-halved"></i> <span><strong>confianza</strong> — buenas prácticas, seguridad y soporte</span></div>
+                <div class="value-item"><i class="fas fa-chart-simple"></i> <span><strong>medición</strong> — objetivos claros y mejoras con datos</span></div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- CARDS -->
-    <section class="tech-grid" id="nosotros">
-        <article class="tech-card">
-            <div class="tech-icon"><i class="fas fa-laptop-code"></i></div>
-            <h3>ADN SIRC</h3>
-            <p>
-                Construimos con mentalidad de producto: <strong>claridad visual</strong>, estructura sólida y rendimiento.
-                Tu web debe cargar rápido, verse increíble y guiar al usuario directo a la acción.
-            </p>
-            <span class="tech-tag"><i class="fas fa-gauge-high" style="margin-right:6px;"></i> performance real</span>
-        </article>
+        <!-- GALERÍA -->
+        <section class="float-container" aria-label="Galería">
+            <img src="https://img.heresirc.com/Imagenes/paisaje4.jpg" alt="Galería 1" class="float-img" loading="lazy" />
+            <img src="https://img.heresirc.com/Imagenes/paisaje5.jpg" alt="Galería 2" class="float-img" loading="lazy" />
+            <img src="https://img.heresirc.com/Imagenes/paisaje6.jpg" alt="Galería 3" class="float-img" loading="lazy" />
+        </section>
 
-        <article class="tech-card" id="mision">
-            <div class="tech-icon"><i class="fas fa-rocket"></i></div>
-            <h3>MISIÓN</h3>
-            <p>
-                Crear páginas web que <strong>conviertan visitas en clientes</strong>.
-                Diseñamos experiencias simples y elegantes, optimizadas para móvil, SEO y velocidad desde el día uno.
-            </p>
-            <span class="tech-tag"><i class="fas fa-bolt" style="margin-right:6px;"></i> lanzamientos rápidos</span>
-        </article>
-
-        <article class="tech-card" id="vision">
-            <div class="tech-icon"><i class="fas fa-globe"></i></div>
-            <h3>VISIÓN</h3>
-            <p>
-                Ser el aliado de referencia para negocios que quieren crecer en digital:
-                <strong>webs modernas</strong>, escalables y fáciles de mantener, con resultados medibles y mejora continua.
-            </p>
-            <span class="tech-tag"><i class="fas fa-chart-line" style="margin-right:6px;"></i> crecimiento sostenido</span>
-        </article>
-    </section>
-
-    <!-- VALORES -->
-    <section id="valores" class="values-section">
-        <h2 class="section-title"><i class="fas fa-cubes"></i> PRINCIPIOS SIRC <i class="fas fa-cubes"></i></h2>
-        <div class="values-grid">
-            <div class="value-item"><i class="fas fa-ruler-combined"></i> <span><strong>claridad</strong> — diseño que se entiende en 5 segundos</span></div>
-            <div class="value-item"><i class="fas fa-mobile-screen-button"></i> <span><strong>mobile first</strong> — pensado para el pulgar y la velocidad</span></div>
-            <div class="value-item"><i class="fas fa-gauge-high"></i> <span><strong>rendimiento</strong> — carga rápida, Core Web Vitals en mente</span></div>
-            <div class="value-item"><i class="fas fa-magnifying-glass"></i> <span><strong>SEO base</strong> — estructura, etiquetas y contenido encontrable</span></div>
-            <div class="value-item"><i class="fas fa-shield-halved"></i> <span><strong>confianza</strong> — buenas prácticas, seguridad y soporte</span></div>
-            <div class="value-item"><i class="fas fa-chart-simple"></i> <span><strong>medición</strong> — objetivos claros y mejoras con datos</span></div>
-        </div>
-    </section>
-
-    <!-- GALERÍA -->
-    <section class="float-container" aria-label="Galería">
-        <img src="https://img.heresirc.com/Imagenes/paisaje4.jpg" alt="Galería 1" class="float-img" loading="lazy" />
-        <img src="https://img.heresirc.com/Imagenes/paisaje5.jpg" alt="Galería 2" class="float-img" loading="lazy" />
-        <img src="https://img.heresirc.com/Imagenes/paisaje6.jpg" alt="Galería 3" class="float-img" loading="lazy" />
-    </section>
-
-    <footer class="footer-tech">
-        ✦ <strong>SIRC</strong> · diseño y desarrollo web con intención ✦ <br />
-        © 2025 — páginas web rápidas · <a href="mailto:hola@heresirc.space">hola@heresirc.space</a>
-    </footer>
-</div>
+        <footer class="footer-tech">
+            ✦ <strong>SIRC</strong> · diseño y desarrollo web con intención ✦ <br />
+            © 2025 — páginas web rápidas · <a href="mailto:hola@heresirc.space">hola@heresirc.space</a>
+        </footer>
+    </div>
+</section>
 
 <script>
     (function() {
@@ -568,13 +711,11 @@
             if (img.complete && img.naturalWidth === 0) applyFallback();
         }
 
-        // ====== FIX MENÚ MÓVIL (abre/cierra) ======
+        // Menú móvil
         const toggle = document.getElementById('menuToggle');
         const nav = document.getElementById('mobileNav');
-
         if (toggle && nav) {
             const icon = toggle.querySelector('i');
-
             function setOpen(isOpen) {
                 nav.classList.toggle('is-open', isOpen);
                 toggle.setAttribute('aria-expanded', String(isOpen));
@@ -583,31 +724,33 @@
                     icon.classList.toggle('fa-xmark', isOpen);
                 }
             }
-
-            // Click en botón
             toggle.addEventListener('click', (e) => {
                 e.preventDefault();
-                const isOpen = nav.classList.contains('is-open');
-                setOpen(!isOpen);
+                setOpen(!nav.classList.contains('is-open'));
             });
-
-            // Cierra al tocar un link del menú
             nav.querySelectorAll('a').forEach(a => {
                 a.addEventListener('click', () => setOpen(false));
             });
-
-            // Cierra al tocar fuera
             document.addEventListener('click', (e) => {
-                const target = e.target;
-                const clickInside = nav.contains(target) || toggle.contains(target);
-                if (!clickInside) setOpen(false);
+                if (!nav.contains(e.target) && !toggle.contains(e.target)) setOpen(false);
             });
-
-            // Si cambias a escritorio, deja el estado limpio
             window.addEventListener('resize', () => {
                 if (window.innerWidth > 768) setOpen(false);
             });
         }
+
+        // Animación de entrada para los value-items al hacer scroll
+        const valueItems = document.querySelectorAll('.value-item');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    // opcional: seguir observando para que no desaparezca
+                }
+            });
+        }, { threshold: 0.3 });
+
+        valueItems.forEach(item => observer.observe(item));
     })();
 </script>
 
