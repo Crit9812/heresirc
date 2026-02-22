@@ -105,9 +105,7 @@
             text-shadow: 0 2px 4px rgba(0,0,0,0.3);
             font-weight: 700;
         }
-        .nav-links a:hover {
-            border-bottom-color: #ff5e00;
-        }
+        .nav-links a:hover { border-bottom-color: #ff5e00; }
 
         .menu-toggle {
             display: none;
@@ -119,10 +117,10 @@
             text-shadow: 0 2px 5px black;
         }
 
-        /* ----- SECCIONES CON FONDO Y ANIMACIONES (SIN BORDES NI DIVISIONES) ----- */
+        /* ----- SECCIONES CON FONDO Y ANIMACIONES ----- */
         .bg-section {
             position: relative;
-            background-attachment: fixed; /* efecto parallax suave */
+            background-attachment: fixed;
             background-position: center;
             background-repeat: no-repeat;
             background-size: cover;
@@ -132,28 +130,24 @@
             border: none;
         }
 
-        /* Fondo para la primera sección (hero) */
         .bg-section-hero {
             background-image: url('https://img.heresirc.com/Imagenes/paisaje4.jpg');
             background-attachment: fixed;
             background-position: center 30%;
         }
 
-        /* Fondo para la segunda sección (cards + misión/visión) */
         .bg-section-middle {
             background-image: url('https://img.heresirc.com/Imagenes/paisaje5.jpg');
             background-attachment: fixed;
             background-position: center 40%;
         }
 
-        /* Fondo para la tercera sección (valores + galería) */
         .bg-section-bottom {
             background-image: url('https://img.heresirc.com/Imagenes/paisaje6.jpg');
             background-attachment: fixed;
             background-position: center 20%;
         }
 
-        /* capa oscura para legibilidad (sin bordes) */
         .bg-section::before {
             content: '';
             position: absolute;
@@ -163,7 +157,6 @@
             backdrop-filter: blur(2px);
         }
 
-        /* ajuste de color de texto sobre fondos oscuros */
         .bg-section .hero-right h1,
         .bg-section .hero-right .tagline-neon,
         .bg-section .hero-right p,
@@ -194,9 +187,7 @@
             color: white;
         }
 
-        .bg-section .tech-card p {
-            color: #f0f0f0;
-        }
+        .bg-section .tech-card p { color: #f0f0f0; }
 
         .bg-section .email-holo {
             background: rgba(0,0,0,0.4);
@@ -218,7 +209,7 @@
             color: #ff5e00;
         }
 
-        /* ----- HERO (con circulo blanco y animación del logo) ----- */
+        /* ----- HERO ----- */
         .hero-nike {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -234,21 +225,18 @@
             z-index: 10;
         }
 
-        /* CÍRCULO BLANCO que resalta el logo */
         .avatar-tech {
             width: min(320px, 80%);
             aspect-ratio: 1/1;
             border-radius: 50%;
             overflow: hidden;
-            border: 6px solid rgba(255, 255, 255, 0.95); /* círculo blanco */
+            border: 6px solid rgba(255, 255, 255, 0.95);
             box-shadow: 0 0 40px rgba(255,255,255,0.6), 0 20px 30px -5px black;
-            background-color: white; /* por si la imagen falla, fondo blanco */
+            background-color: white;
             animation: floatLogo 3s ease-in-out infinite, fadeInUp 1s ease-out;
             transition: transform 0.3s;
         }
-        .avatar-tech:hover {
-            transform: scale(1.02);
-        }
+        .avatar-tech:hover { transform: scale(1.02); }
 
         @keyframes floatLogo {
             0% { transform: translateY(0px); }
@@ -352,24 +340,20 @@
         }
         .email-holo a:hover { color: #ff5e00; }
 
-        /* ==========================
-           FIX: QUITAR "FRANJAS BLANCAS"
-           ENTRE ADN / MISIÓN / VISIÓN
-           ==========================
-           La separación visible casi siempre viene de:
-           1) fondo blanco de .tech-tag (antes era #111)
-           2) sombras / bordes / radios que dejan "cortes"
-           3) el pseudo-separador ::after en desktop
-
-           Aquí lo dejamos continuo (sin líneas verticales y sin
-           elementos que parezcan "otro apartado").
+        /* =========================================================
+           FIX REAL: QUITAR EL "ESPACIO" ENTRE ADN / MISIÓN / VISIÓN
+           =========================================================
+           Aunque el gap esté en 0, a veces se ve "separación" por:
+           - redondeos/subpíxel del grid
+           - anti-aliasing del blur/backdrop
+           Solución: superponer 1px entre tarjetas (horizontal y vertical)
+           para que no haya NINGÚN hueco visible.
         */
 
-        /* ----- CARDS (CONTINUAS) ----- */
         .tech-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 0;               /* cero separación real */
+            gap: 0;               /* sin hueco real */
             margin: 4.5rem 0;
             border: none;
         }
@@ -382,40 +366,33 @@
             transition: all 0.3s ease;
             display: flex;
             flex-direction: column;
+            border-radius: 0;
+            box-shadow: none;
+            margin: 0;
+            position: relative;
 
-            border-radius: 0;     /* se fusionan */
-            box-shadow: none;     /* sin “cortes” por sombra */
-            margin: 0;            /* sin margen */
+            /* evita “cortes” raros */
+            overflow: hidden;
 
             opacity: 0;
             transform: translateY(40px);
             animation: cardAppear 0.8s forwards;
-
-            position: relative;
-
-            /* CLAVE: evita que algo “pinte” blanco entre tarjetas */
-            overflow: hidden;
         }
 
-        /* QUITAMOS el separador vertical para que no se note cambio de apartado */
-        .tech-card:not(:last-child)::after {
-            display: none;
-        }
+        /* SUPERPOSICIÓN 1px (desktop/tablet) para matar cualquier “hueco” */
+        .tech-card + .tech-card { margin-left: -1px; }
 
+        @keyframes cardAppear { to { opacity: 1; transform: translateY(0); } }
         .tech-card:nth-child(1) { animation-delay: 0.1s; }
         .tech-card:nth-child(2) { animation-delay: 0.3s; }
         .tech-card:nth-child(3) { animation-delay: 0.5s; }
-
-        @keyframes cardAppear {
-            to { opacity: 1; transform: translateY(0); }
-        }
 
         .tech-card:hover {
             background: rgba(0, 0, 0, 0.7);
             transform: translateY(-10px) scale(1.02);
             z-index: 10;
             box-shadow: 0 30px 40px -12px #ff5e0080;
-            border-radius: 12px; /* solo hover */
+            border-radius: 12px;
         }
 
         .tech-icon {
@@ -436,8 +413,6 @@
             flex: 1;
         }
 
-        /* CLAVE: el "tag" no debe crear una franja clara.
-           Lo dejamos translúcido oscuro, consistente con el card. */
         .tech-tag {
             display: inline-block;
             background: rgba(0,0,0,0.35);
@@ -457,7 +432,7 @@
             border-color: rgba(255, 94, 0, 0.9);
         }
 
-        /* ----- VALORES con animación scroll (activada por JS) ----- */
+        /* ----- VALORES ----- */
         .values-section {
             margin: 5rem 0;
             padding-top: 3rem;
@@ -509,7 +484,7 @@
             font-weight: 800;
         }
 
-        /* ----- GALERÍA con zoom suave al hacer scroll ----- */
+        /* ----- GALERÍA ----- */
         .float-container {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -531,9 +506,7 @@
         .float-img:nth-child(2) { animation-delay: 0.4s; }
         .float-img:nth-child(3) { animation-delay: 0.6s; }
 
-        @keyframes imgAppear {
-            to { opacity: 1; transform: scale(1); }
-        }
+        @keyframes imgAppear { to { opacity: 1; transform: scale(1); } }
 
         .float-img:hover {
             transform: scale(1.05);
@@ -541,7 +514,7 @@
             box-shadow: 0 20px 30px #ff5e0040;
         }
 
-        /* ----- FOOTER (sin borde superior) ----- */
+        /* ----- FOOTER ----- */
         .footer-tech {
             padding: 2.5rem 0 2rem;
             margin-top: 3rem;
@@ -557,23 +530,19 @@
             border-bottom: 1px solid #ff5e00;
         }
 
-        /* Aseguramos que no haya bordes blancos entre secciones */
-        .bg-section + .bg-section {
-            margin-top: 0;
-            border-top: none;
-        }
+        .bg-section + .bg-section { margin-top: 0; border-top: none; }
 
         @media (max-width: 1024px) {
-            .tech-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 0;
-            }
+            .tech-grid { grid-template-columns: repeat(2, 1fr); }
+            /* superposición 1px también en grid 2 columnas */
+            .tech-card + .tech-card { margin-left: -1px; }
         }
 
         /* ====== FIX MENÚ MÓVIL ====== */
         @media (max-width: 768px) {
             .nav-bar { padding: 1rem 0; background: rgba(0,0,0,0.5); }
             .menu-toggle { display: block; }
+
             .nav-links {
                 display: none;
                 width: 100%;
@@ -591,24 +560,16 @@
                 padding: 0.6rem 0;
                 border-bottom: 1px solid rgba(255,255,255,0.2);
             }
-            .hero-nike {
-                grid-template-columns: 1fr;
-                text-align: center;
-            }
+
+            .hero-nike { grid-template-columns: 1fr; text-align: center; }
             .hero-right { align-items: center; }
             .email-holo { margin: 0.2rem auto 0; }
             .cta-row { justify-content: center; }
-            .tech-grid {
-                grid-template-columns: 1fr;
-                gap: 0;
-            }
-            .tech-card {
-                margin-bottom: 0;
-                border-radius: 0;
-            }
-            .tech-card:hover {
-                border-radius: 12px;
-            }
+
+            .tech-grid { grid-template-columns: 1fr; }
+            /* En móvil el “hueco” puede verse como separación vertical: lo matamos igual */
+            .tech-card + .tech-card { margin-left: 0; margin-top: -1px; }
+
             .values-grid { grid-template-columns: 1fr; }
             .float-container { grid-template-columns: 1fr; }
         }
@@ -624,7 +585,7 @@
 </head>
 <body>
 
-<!-- SECCIÓN 1 (HERO) con fondo paisaje4.jpg -->
+<!-- SECCIÓN 1 (HERO) -->
 <section class="bg-section bg-section-hero">
     <div class="nike-wrapper">
         <nav class="nav-bar">
@@ -641,7 +602,6 @@
             </button>
         </nav>
 
-        <!-- HERO -->
         <section id="inicio" class="hero-nike">
             <div class="hero-left">
                 <div class="avatar-tech" id="avatarContainer">
@@ -677,10 +637,9 @@
     </div>
 </section>
 
-<!-- SECCIÓN 2 (CARDS + MISIÓN + VISIÓN) con fondo paisaje5.jpg -->
+<!-- SECCIÓN 2 (CARDS) -->
 <section class="bg-section bg-section-middle">
     <div class="nike-wrapper">
-        <!-- CARDS -->
         <section class="tech-grid" id="nosotros">
             <article class="tech-card">
                 <div class="tech-icon"><i class="fas fa-laptop-code"></i></div>
@@ -691,6 +650,7 @@
                 </p>
                 <span class="tech-tag"><i class="fas fa-gauge-high" style="margin-right:6px;"></i> performance real</span>
             </article>
+
             <article class="tech-card" id="mision">
                 <div class="tech-icon"><i class="fas fa-rocket"></i></div>
                 <h3>MISIÓN</h3>
@@ -700,6 +660,7 @@
                 </p>
                 <span class="tech-tag"><i class="fas fa-bolt" style="margin-right:6px;"></i> lanzamientos rápidos</span>
             </article>
+
             <article class="tech-card" id="vision">
                 <div class="tech-icon"><i class="fas fa-globe"></i></div>
                 <h3>VISIÓN</h3>
@@ -713,10 +674,9 @@
     </div>
 </section>
 
-<!-- SECCIÓN 3 (VALORES + GALERÍA + FOOTER) con fondo paisaje6.jpg -->
+<!-- SECCIÓN 3 (VALORES + GALERÍA + FOOTER) -->
 <section class="bg-section bg-section-bottom">
     <div class="nike-wrapper">
-        <!-- VALORES -->
         <section id="valores" class="values-section">
             <h2 class="section-title"><i class="fas fa-cubes"></i> PRINCIPIOS SIRC <i class="fas fa-cubes"></i></h2>
             <div class="values-grid" id="valuesGrid">
@@ -729,7 +689,6 @@
             </div>
         </section>
 
-        <!-- GALERÍA -->
         <section class="float-container" aria-label="Galería">
             <img src="https://img.heresirc.com/Imagenes/paisaje4.jpg" alt="Galería 1" class="float-img" loading="lazy" />
             <img src="https://img.heresirc.com/Imagenes/paisaje5.jpg" alt="Galería 2" class="float-img" loading="lazy" />
@@ -783,9 +742,7 @@
                 e.preventDefault();
                 setOpen(!nav.classList.contains('is-open'));
             });
-            nav.querySelectorAll('a').forEach(a => {
-                a.addEventListener('click', () => setOpen(false));
-            });
+            nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setOpen(false)));
             document.addEventListener('click', (e) => {
                 if (!nav.contains(e.target) && !toggle.contains(e.target)) setOpen(false);
             });
@@ -798,9 +755,7 @@
         const valueItems = document.querySelectorAll('.value-item');
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
+                if (entry.isIntersecting) entry.target.classList.add('visible');
             });
         }, { threshold: 0.3 });
 
