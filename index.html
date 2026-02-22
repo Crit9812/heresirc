@@ -127,7 +127,6 @@
             background-repeat: no-repeat;
             background-size: cover;
             isolation: isolate;
-            /* Eliminamos cualquier borde o separación */
             margin: 0;
             padding: 0;
             border: none;
@@ -353,41 +352,54 @@
         }
         .email-holo a:hover { color: #ff5e00; }
 
-        /* ----- CARDS con animación al aparecer (SIN SEPARACIÓN ENTRE ELLAS) ----- */
+        /* ==========================
+           FIX: QUITAR "FRANJAS BLANCAS"
+           ENTRE ADN / MISIÓN / VISIÓN
+           ==========================
+           La separación visible casi siempre viene de:
+           1) fondo blanco de .tech-tag (antes era #111)
+           2) sombras / bordes / radios que dejan "cortes"
+           3) el pseudo-separador ::after en desktop
+
+           Aquí lo dejamos continuo (sin líneas verticales y sin
+           elementos que parezcan "otro apartado").
+        */
+
+        /* ----- CARDS (CONTINUAS) ----- */
         .tech-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 0; /* Eliminado el gap para que no haya separación blanca */
+            gap: 0;               /* cero separación real */
             margin: 4.5rem 0;
-            border: none; /* Aseguramos que no haya bordes */
+            border: none;
         }
 
         .tech-card {
             background: rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(10px);
-            border: none; /* Sin bordes entre tarjetas */
+            border: none;
             padding: 2rem 1.5rem 1.8rem;
             transition: all 0.3s ease;
             display: flex;
             flex-direction: column;
-            border-radius: 0; /* Sin bordes redondeados para que se fusionen */
-            box-shadow: none; /* Sin sombra para evitar separación visual */
+
+            border-radius: 0;     /* se fusionan */
+            box-shadow: none;     /* sin “cortes” por sombra */
+            margin: 0;            /* sin margen */
+
             opacity: 0;
             transform: translateY(40px);
             animation: cardAppear 0.8s forwards;
-            margin: 0; /* Sin márgenes */
+
             position: relative;
+
+            /* CLAVE: evita que algo “pinte” blanco entre tarjetas */
+            overflow: hidden;
         }
 
-        /* Añadimos un pequeño separador sutil solo para distinguir, pero sin blanco */
+        /* QUITAMOS el separador vertical para que no se note cambio de apartado */
         .tech-card:not(:last-child)::after {
-            content: '';
-            position: absolute;
-            right: 0;
-            top: 15%;
-            height: 70%;
-            width: 1px;
-            background: rgba(255,255,255,0.1); /* Línea casi invisible, no blanca */
+            display: none;
         }
 
         .tech-card:nth-child(1) { animation-delay: 0.1s; }
@@ -399,11 +411,11 @@
         }
 
         .tech-card:hover {
-            background: rgba(0, 0, 0, 0.7); /* Oscurecemos al hover en lugar de borde */
+            background: rgba(0, 0, 0, 0.7);
             transform: translateY(-10px) scale(1.02);
             z-index: 10;
             box-shadow: 0 30px 40px -12px #ff5e0080;
-            border-radius: 12px; /* Solo al hover para dar efecto */
+            border-radius: 12px; /* solo hover */
         }
 
         .tech-icon {
@@ -423,27 +435,31 @@
             margin-bottom: 1.8rem;
             flex: 1;
         }
+
+        /* CLAVE: el "tag" no debe crear una franja clara.
+           Lo dejamos translúcido oscuro, consistente con el card. */
         .tech-tag {
             display: inline-block;
-            background: #111;
+            background: rgba(0,0,0,0.35);
             color: white;
             padding: 0.4rem 1.2rem;
             font-size: 0.8rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            border: none;
+            border: 1px solid rgba(255,255,255,0.15);
             width: fit-content;
-            transition: background 0.2s;
+            transition: background 0.2s, border-color 0.2s;
+            backdrop-filter: blur(6px);
         }
         .tech-card:hover .tech-tag {
-            background: #ff5e00;
+            background: rgba(255, 94, 0, 0.9);
+            border-color: rgba(255, 94, 0, 0.9);
         }
 
         /* ----- VALORES con animación scroll (activada por JS) ----- */
         .values-section {
             margin: 5rem 0;
-            /* Eliminado border-top */
             padding-top: 3rem;
         }
         .section-title {
@@ -527,7 +543,6 @@
 
         /* ----- FOOTER (sin borde superior) ----- */
         .footer-tech {
-            /* Eliminado border-top */
             padding: 2.5rem 0 2rem;
             margin-top: 3rem;
             text-align: center;
@@ -551,10 +566,7 @@
         @media (max-width: 1024px) {
             .tech-grid {
                 grid-template-columns: repeat(2, 1fr);
-                gap: 0; /* Sin gap también en tablet */
-            }
-            .tech-card:not(:last-child)::after {
-                display: none; /* Ocultamos separadores en tablet */
+                gap: 0;
             }
         }
 
@@ -588,22 +600,17 @@
             .cta-row { justify-content: center; }
             .tech-grid {
                 grid-template-columns: 1fr;
-                gap: 0; /* Sin gap en móvil */
+                gap: 0;
             }
             .tech-card {
-                margin-bottom: 0; /* Sin margen inferior */
-                border-radius: 0; /* Sin bordes redondeados */
+                margin-bottom: 0;
+                border-radius: 0;
             }
             .tech-card:hover {
-                border-radius: 12px; /* Solo hover */
+                border-radius: 12px;
             }
             .values-grid { grid-template-columns: 1fr; }
             .float-container { grid-template-columns: 1fr; }
-
-            /* Ocultamos separadores en móvil */
-            .tech-card:not(:last-child)::after {
-                display: none;
-            }
         }
 
         section, div[id] { scroll-margin-top: 100px; }
@@ -671,7 +678,6 @@
 </section>
 
 <!-- SECCIÓN 2 (CARDS + MISIÓN + VISIÓN) con fondo paisaje5.jpg -->
-<!-- Ahora las cards están pegadas, sin separación blanca entre ellas -->
 <section class="bg-section bg-section-middle">
     <div class="nike-wrapper">
         <!-- CARDS -->
@@ -794,7 +800,6 @@
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
-                    // opcional: seguir observando para que no desaparezca
                 }
             });
         }, { threshold: 0.3 });
